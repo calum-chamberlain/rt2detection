@@ -13,3 +13,4 @@ RefTek dataloggers and simply and quickly:
 
 This package was initially written by Calum Chamberlain of Victoria University of Wellington during his Phd, while
 learning Python and C - any help is appreciated!
+Laura-May Baratin is going to be involved in this project as well.
