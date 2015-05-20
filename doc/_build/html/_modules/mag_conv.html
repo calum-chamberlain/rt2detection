@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mag_conv &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-STALTA">STALTA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-mag_conv">mag_conv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>mag_conv</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for mag_conv</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Codes to extract amplitude information from s-file and cnvert these to a</span>
+<span class="sd">previously dervied local magnitude scale.  Originally written to generate</span>
+<span class="sd">magnitudes for the DFDP Alpine Fault drilling project in New Zealand by</span>
+<span class="sd">Calum Chamberlain (VUW) using the magnitude constasts derived by Boese et al.</span>
+<span class="sd">(2012).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c"># import parameter file</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="mag_conv"><a class="viewcode-back" href="../modules.html#mag_conv.mag_conv">[docs]</a><span class="k">def</span> <span class="nf">mag_conv</span><span class="p">(</span><span class="n">deltaamp</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">sta_cor</span><span class="p">,</span> <span class="n">f_dependent</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mf">999.9</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to convert from peak-to-trough amplitude to magnitude for a single</span>
+<span class="sd">    seismic station at a certain hypocentral distance (distance) and with a set</span>
+<span class="sd">    station correction term.  Will look for parameters for conversion in a file</span>
+<span class="sd">    mag_conv_par,py in the ../par directory (relative to this code).</span>
+
+<span class="sd">    Certain assumptions are implicit in this calculation:</span>
+<span class="sd">        *   peak-to-peak amplitude represents the maximum peak-to-trough</span>
+<span class="sd">            amplitude of a body wave phase on a Wood-Anderson converted</span>
+<span class="sd">            seismogram and is measured in nm.  This will be halved to give an</span>
+<span class="sd">            approximate peak amplitude as specified in the definition of the</span>
+<span class="sd">            Wood Anderson local magnitude scale.</span>
+
+<span class="sd">    :type deltaamp: float</span>
+<span class="sd">    :param deltaamp: peak-to-peak amplitude in nm</span>
+<span class="sd">    :type distance: float</span>
+<span class="sd">    :param distance: hypocentral distance in km</span>
+<span class="sd">    :type sta_corr: float</span>
+<span class="sd">    :param sta_corr: Station correction term in magnitude units.</span>
+<span class="sd">    :type f_dependent: bool</span>
+<span class="sd">    :param f_dependent: option, defaults to False</span>
+<span class="sd">    :type period: float</span>
+<span class="sd">    :param period: optional, required if f_dependent=True</span>
+
+<span class="sd">    :return: Magnitude, float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">par</span> <span class="kn">import</span> <span class="n">mag_conv_par</span> <span class="k">as</span> <span class="n">mag_par</span>
+
+    <span class="c"># Perform a basic check to confirm that the local magnitude scale applies</span>
+    <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">mag_par</span><span class="o">.</span><span class="n">maxdist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Earthquake beyond magnitude scale&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">f_dependent</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">period</span><span class="o">==</span><span class="mf">999.9</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;You have set frequency dependence to true, but not given a period&#39;</span><span class="p">)</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="n">mag_par</span><span class="o">.</span><span class="n">gamma</span><span class="o">*</span><span class="n">period</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gamma</span><span class="o">=</span><span class="n">mag_par</span><span class="o">.</span><span class="n">gamma</span>
+
+    <span class="n">Ml</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">deltaamp</span><span class="p">))</span><span class="o">+</span>\
+            <span class="p">(</span><span class="n">mag_par</span><span class="o">.</span><span class="n">alpha</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">distance</span><span class="p">))</span><span class="o">+</span>\
+            <span class="p">(</span><span class="mf">0.4343</span><span class="o">*</span><span class="n">gamma</span><span class="o">*</span><span class="n">distance</span><span class="p">)</span><span class="o">-</span>\
+            <span class="n">sta_cor</span>
+    <span class="k">return</span> <span class="n">Ml</span>
+</div>
+<div class="viewcode-block" id="event_magnitude"><a class="viewcode-back" href="../modules.html#mag_conv.event_magnitude">[docs]</a><span class="k">def</span> <span class="nf">event_magnitude</span><span class="p">(</span><span class="n">sfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to generate the magnitude of a single event from a seisan s-file</span>
+<span class="sd">    with amplitude picks in it</span>
+
+<span class="sd">    :type sfile: String</span>
+<span class="sd">    :param sfile: Nordic type s-file name, with full path</span>
+
+<span class="sd">    :return: Local magnitude, standard deviation of magnitude</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">pro</span> <span class="kn">import</span> <span class="n">Sfile_util</span>
+    <span class="kn">from</span> <span class="nn">par</span> <span class="kn">import</span> <span class="n">mag_conv_par</span> <span class="k">as</span> <span class="n">mag_par</span>
+    <span class="c"># Check that the s-file exists</span>
+    <span class="kn">import</span> <span class="nn">glob</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">sfile</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s">&#39;Sfile does not exist: &#39;</span><span class="o">+</span><span class="n">sfile</span><span class="p">)</span>
+
+    <span class="n">picks</span><span class="o">=</span><span class="n">Sfile_util</span><span class="o">.</span><span class="n">readpicks</span><span class="p">(</span><span class="n">sfile</span><span class="p">)</span>
+    <span class="n">Mag_out</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">pick</span> <span class="ow">in</span> <span class="n">picks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pick</span><span class="o">.</span><span class="n">phase</span><span class="o">==</span><span class="s">&#39;IAML&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&#39;sta_cor&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+                <span class="k">del</span> <span class="n">sta_cor</span>
+            <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">mag_par</span><span class="o">.</span><span class="n">station_corrections</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pick</span><span class="o">.</span><span class="n">station</span><span class="o">==</span><span class="n">station</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">sta_cor</span><span class="o">=</span><span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;sta_cor&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+                <span class="n">sta_cor</span><span class="o">=</span><span class="mf">1.0</span>
+                <span class="c"># print &#39;\nStation correction not found for station &#39;+pick.station</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Magnitude</span><span class="o">=</span><span class="n">mag_conv</span><span class="p">(</span><span class="n">pick</span><span class="o">.</span><span class="n">amplitude</span><span class="p">,</span> <span class="n">pick</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sta_cor</span><span class="p">,</span>\
+                                  <span class="n">mag_par</span><span class="o">.</span><span class="n">frequency_dependent</span><span class="p">,</span>\
+                                  <span class="n">pick</span><span class="o">.</span><span class="n">peri</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Magnitude</span><span class="p">):</span>
+                    <span class="n">Mag_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Magnitude</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+                <span class="c"># print &#39;Either earthquake too far away, or frequency is not set&#39;</span>
+                <span class="k">pass</span>
+
+    <span class="n">Mag_std</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">)</span>
+    <span class="n">Mag_out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">)</span> <span class="c"># Take the mean magnitude</span>
+    <span class="k">return</span> <span class="n">Mag_out</span><span class="p">,</span> <span class="n">Mag_std</span>
+</div>
+<div class="viewcode-block" id="recalc_database"><a class="viewcode-back" href="../modules.html#mag_conv.recalc_database">[docs]</a><span class="k">def</span> <span class="nf">recalc_database</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overarching code to recalculate and plot all the magnitudes for a given</span>
+<span class="sd">    database in seisan.  Must be a databse of S-files in a SEISAN REA structure</span>
+
+<span class="sd">    :type path: String</span>
+<span class="sd">    :param path: Path to the top of the rea tree (above the year directories)</span>
+
+<span class="sd">    :return: Magnitudes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">par</span> <span class="kn">import</span> <span class="n">mag_conv_par</span> <span class="k">as</span> <span class="n">mag_par</span>
+    <span class="kn">from</span> <span class="nn">pro</span> <span class="kn">import</span> <span class="n">Sfile_util</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s">&#39;Path does not exist &#39;</span><span class="o">+</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">sfilelist</span><span class="o">=</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="s">&#39;/*/*/*.S*&#39;</span><span class="p">)</span>
+    <span class="n">Mag_in</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">Mag_out</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">Date</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sfile</span> <span class="ow">in</span> <span class="n">sfilelist</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Working on sfile: &#39;</span><span class="o">+</span><span class="n">sfile</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">Date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Sfile_util</span><span class="o">.</span><span class="n">readheader</span><span class="p">(</span><span class="n">sfile</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Sfile_util</span><span class="o">.</span><span class="n">readheader</span><span class="p">(</span><span class="n">sfile</span><span class="p">)</span><span class="o">.</span><span class="n">Mag_1</span><span class="p">):</span>
+            <span class="n">Mag_in</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Sfile_util</span><span class="o">.</span><span class="n">readheader</span><span class="p">(</span><span class="n">sfile</span><span class="p">)</span><span class="o">.</span><span class="n">Mag_1</span><span class="p">)</span>
+        <span class="n">Magnitude</span><span class="o">=</span><span class="p">(</span><span class="n">event_magnitude</span><span class="p">(</span><span class="n">sfile</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Magnitude</span><span class="p">):</span>
+            <span class="n">Mag_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Magnitude</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># Plot histogram</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">patches</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">)</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;Black&#39;</span><span class="p">,</span> \
+                                  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Previous, n=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">)))</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">patches</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">)</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;Red&#39;</span><span class="p">,</span> \
+                                  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Recalculated, n=&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">)))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Number of events&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Local Magnitude $M_L$&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">Mag_out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">)</span>
+        <span class="n">cdf</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">))</span> <span class="c"># normalized, useful in a mo</span>
+        <span class="n">cdf</span><span class="o">=</span><span class="p">((</span><span class="n">cdf</span><span class="o">*-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">+</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Mag_out</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">cdf</span><span class="p">),</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Recalculated&#39;</span><span class="p">)</span>
+        <span class="n">Mag_in</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">)</span>
+        <span class="n">cdf</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">))</span> <span class="c"># normalized, useful in a mo</span>
+        <span class="n">cdf</span><span class="o">=</span><span class="p">((</span><span class="n">cdf</span><span class="o">*-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">+</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Mag_in</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">cdf</span><span class="p">),</span> <span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Previous&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;$Log_{10}$ of cumulative density&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Local Magnitude$M_L$&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Mag_out</span><span class="p">,</span> <span class="n">Mag_in</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;Error plotting&#39;</span>
+        <span class="k">return</span> <span class="n">Mag_out</span><span class="p">,</span> <span class="n">Mag_in</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">!=</span><span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Requires one argument, the path to the s-file database&#39;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;/home/calumch/my_programs/Building/rt2detection&quot;</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">par</span> <span class="kn">import</span> <span class="n">mag_conv_par</span> <span class="k">as</span> <span class="n">mag_par</span>
+        <span class="kn">from</span> <span class="nn">pro</span> <span class="kn">import</span> <span class="n">Sfile_util</span>
+        <span class="n">recalc_database</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

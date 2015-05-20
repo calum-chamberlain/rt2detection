@@ -1,0 +1,1 @@
+./rtpick -sfile /home/seismo/seismo/REA/TER__/2013/03/12-0939-49L.S201303 -wavefile 2013-03-12-0938-39.TER___032_00 -locate 1 -iter 200 -maxres 3.0

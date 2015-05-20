@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>STALTA &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-STALTA">STALTA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-mag_conv">mag_conv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>STALTA</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for STALTA</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Script to run the obspy picking routines, takes a few arguments of the form:</span>
+<span class="sd">Starttime, endtime, dataloc, routine type (classic, carl)</span>
+<span class="sd">Data must be formatted in hour long multiplexed miniseed files and named in</span>
+<span class="sd">seisan yyyy-mm-dd-hhmm-ss format</span>
+
+<span class="sd">v 1.0 - Working, but parameters set to defaults</span>
+<span class="sd">v 1.1 - Outputs to seisan directory structure</span>
+<span class="sd">Calum Chamberlain, Victoria University of Wellington, 09/11/2014</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="cjc_trigger_routine"><a class="viewcode-back" href="../modules.html#STALTA.cjc_trigger_routine">[docs]</a><span class="k">def</span> <span class="nf">cjc_trigger_routine</span><span class="p">(</span><span class="n">startdate</span><span class="p">,</span><span class="n">enddate</span><span class="p">,</span><span class="n">dataloc</span><span class="p">,</span><span class="n">trigloc</span><span class="p">,</span><span class="n">routype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Module to run the obspy sta-lta energy based filter routine</span>
+
+<span class="sd">    Must be parsed start date &amp; end date in obspy UTCDateTime type,</span>
+<span class="sd">    dataloc should be a string of the path for the input data</span>
+<span class="sd">    trigloc should be a string of the ouput path</span>
+<span class="sd">    routype should be a string denpoting the type of detection routine to use</span>
+<span class="sd">        either classic or carl</span>
+<span class="sd">    defaults have been set in the module for trigger parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="c">###############################################################################</span>
+    <span class="c"># Import parameter settings</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;/home/calumch/my_programs/Built/rt2detection&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">par</span> <span class="kn">import</span> <span class="n">trigger_par</span> <span class="k">as</span> <span class="n">defaults</span>
+    <span class="k">print</span> <span class="n">defaults</span><span class="o">.</span><span class="n">stalen</span>
+<span class="c">###############################################################################</span>
+
+<span class="c"># Format dates</span>
+    <span class="n">startyear</span><span class="o">=</span><span class="n">startdate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">startmonth</span><span class="o">=</span><span class="n">startdate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">startday</span><span class="o">=</span><span class="n">startdate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">endyear</span><span class="o">=</span><span class="n">enddate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">endmonth</span><span class="o">=</span><span class="n">enddate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">endday</span><span class="o">=</span><span class="n">enddate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c"># Import modules</span>
+    <span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">read</span> <span class="k">as</span> <span class="n">obsread</span>
+    <span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">UTCDateTime</span>
+    <span class="kn">import</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">obspy.signal</span> <span class="kn">import</span> <span class="n">coincidenceTrigger</span>
+
+
+<span class="c"># Generate list of days to check through</span>
+    <span class="n">lengthinseconds</span><span class="o">=</span><span class="n">UTCDateTime</span><span class="p">(</span><span class="n">endyear</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">endmonth</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">endday</span><span class="p">)</span><span class="o">-</span>\
+            <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">startyear</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">startmonth</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">startday</span><span class="p">)</span>
+    <span class="n">lendays</span><span class="o">=</span><span class="n">lengthinseconds</span><span class="o">/</span><span class="mi">86400</span>
+    <span class="n">lengthinseconds</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">dfiles</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">dates</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">lendays</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UTCDateTime</span><span class="p">(</span><span class="n">startyear</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">startmonth</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">startday</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mi">86400</span><span class="p">))</span>
+        <span class="n">dfiles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">dataloc</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span>\
+                <span class="nb">str</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span>\
+                <span class="nb">str</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;*&#39;</span><span class="p">))</span>
+
+    <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">dfiles</span><span class="p">)</span>
+    <span class="n">wavelist</span><span class="o">=</span><span class="p">[]</span> <span class="c"># Initialize list variable</span>
+    <span class="c"># Read in data</span>
+    <span class="k">for</span> <span class="n">hfile</span> <span class="ow">in</span> <span class="n">dfiles</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Working on file: &#39;</span><span class="o">+</span><span class="n">hfile</span>
+        <span class="n">st</span><span class="o">=</span><span class="n">obsread</span><span class="p">(</span><span class="n">hfile</span><span class="p">)</span>
+        <span class="n">st1</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">defaults</span><span class="o">.</span><span class="n">comp</span><span class="o">==</span><span class="s">&#39;all&#39;</span><span class="p">:</span>
+            <span class="n">st1</span><span class="o">=</span><span class="n">st1</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="o">+</span><span class="n">defaults</span><span class="o">.</span><span class="n">comp</span><span class="p">)</span>
+        <span class="c"># De-mean data</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="c"># Filter data</span>
+        <span class="n">st1</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;bandpass&#39;</span><span class="p">,</span><span class="n">freqmin</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">lowcut</span><span class="p">,</span><span class="n">freqmax</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">highcut</span><span class="p">)</span>
+        <span class="c"># Use the obspy triggering routine</span>
+        <span class="n">trig</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">if</span> <span class="n">routype</span><span class="o">==</span><span class="s">&#39;classic&#39;</span><span class="p">:</span>
+            <span class="n">trig</span> <span class="o">=</span> <span class="n">coincidenceTrigger</span><span class="p">(</span><span class="s">&quot;recstalta&quot;</span><span class="p">,</span><span class="n">defaults</span><span class="o">.</span><span class="n">trigon</span><span class="p">,</span>\
+                                      <span class="n">defaults</span><span class="o">.</span><span class="n">trigoff</span><span class="p">,</span><span class="n">st1</span><span class="p">,</span><span class="n">defaults</span><span class="o">.</span><span class="n">netsum</span><span class="p">,</span>\
+                                      <span class="n">sta</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">stalen</span><span class="p">,</span><span class="n">lta</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">ltalen</span><span class="p">,</span>\
+                                      <span class="n">delete_long_trigger</span><span class="o">=</span><span class="s">&#39;True&#39;</span><span class="p">,</span>\
+                                      <span class="n">trigger_off_extension</span><span class="o">=</span>\
+                                      <span class="n">defaults</span><span class="o">.</span><span class="n">netwin</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">trig</span> <span class="o">=</span> <span class="n">coincidenceTrigger</span><span class="p">(</span><span class="s">&quot;carlstatrig&quot;</span><span class="p">,</span><span class="n">defaults</span><span class="o">.</span><span class="n">trigon</span><span class="p">,</span>\
+                                          <span class="n">defaults</span><span class="o">.</span><span class="n">trigoff</span><span class="p">,</span><span class="n">st1</span><span class="p">,</span>\
+                                          <span class="n">defaults</span><span class="o">.</span><span class="n">netsum</span><span class="p">,</span><span class="n">sta</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">stalen</span><span class="p">,</span>\
+                                          <span class="n">lta</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">ltalen</span><span class="p">,</span><span class="n">ratio</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">crat</span><span class="p">,</span>\
+                                          <span class="n">quiet</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">cquite</span><span class="p">,</span><span class="n">delete_long_trigger</span><span class="o">=</span><span class="s">&#39;True&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&#39;Triggering routine failed, suggest altering parameters&#39;</span>
+        <span class="c"># Cut data and write out in multiplexed miniseed files</span>
+        <span class="k">if</span> <span class="n">trig</span> <span class="ow">and</span> <span class="n">defaults</span><span class="o">.</span><span class="n">trigout</span><span class="o">==</span><span class="s">&#39;Y&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">trig</span><span class="p">:</span>
+                <span class="n">stout</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">defaults</span><span class="o">.</span><span class="n">precut</span><span class="p">,</span><span class="n">event</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">defaults</span><span class="o">.</span><span class="n">postcut</span><span class="p">)</span>
+                <span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">day</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">second</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span>\
+                        <span class="n">defaults</span><span class="o">.</span><span class="n">net</span><span class="o">+</span><span class="s">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stout</span><span class="p">))</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;_00&#39;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">trigloc</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span><span class="p">)):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">trigloc</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">trigloc</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>\
+                        <span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">trigloc</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>\
+                            <span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">trigloc</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span>\
+                        <span class="nb">str</span><span class="p">(</span><span class="n">stout</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span>\
+                        <span class="n">filename</span>
+                <span class="n">wavelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">stout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="s">&quot;MSEED&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s">&quot;STEIM2&quot;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="c"># Cope with dtype issues</span>
+                    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">stout</span><span class="p">:</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                    <span class="n">stout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;MSEED&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s">&#39;STEIM2&#39;</span><span class="p">)</span>
+                <span class="k">print</span> <span class="s">&#39;Written triggered file as: &#39;</span><span class="o">+</span><span class="n">filename</span>
+        <span class="k">elif</span> <span class="n">defaults</span><span class="o">.</span><span class="n">trigout</span><span class="o">==</span><span class="s">&#39;N&#39;</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Triggers will not be written out but I made &#39;</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">trig</span><span class="p">)</span><span class="o">+</span><span class="s">&#39; detections&#39;</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">trig</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;No triggers were detected&#39;</span>
+    <span class="k">return</span> <span class="n">wavelist</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c"># Read arguments and check</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Requires 5 arguments of: start date (yyyy/mm/dd), end date (yyyy/mm/dd)&#39;</span>
+        <span class="k">print</span> <span class="s">&#39;data location in seisan style folders, output location in seisan&#39;</span>
+        <span class="k">print</span> <span class="s">&#39; style folders, and routine type (classic or carl)&#39;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">startdate</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">startdate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Startdate must be formatted yyyy/mm/dd&#39;</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="n">enddate</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">enddate</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;End date must be formatted yyyy/mm/dd&#39;</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="n">dataloc</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dataloc</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&#39;Path given for seismic data does not exist&#39;</span>
+            <span class="k">print</span> <span class="n">dataloc</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="n">trigloc</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">trigloc</span><span class="p">):</span>
+            <span class="k">print</span> <span class="s">&#39;Path given for output does not exist&#39;</span>
+            <span class="k">print</span> <span class="n">trigloc</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="n">routype</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">routype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;classic&#39;</span><span class="p">,</span><span class="s">&#39;carl&#39;</span><span class="p">]:</span>
+            <span class="k">print</span> <span class="s">&#39;Must give either classic or carl as final argument&#39;</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="n">wavelist</span><span class="o">=</span><span class="n">cjc_trigger_routine</span><span class="p">(</span><span class="n">startdate</span><span class="p">,</span><span class="n">enddate</span><span class="p">,</span><span class="n">dataloc</span><span class="p">,</span><span class="n">trigloc</span><span class="p">,</span><span class="n">routype</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">wavelist</span><span class="o">==</span><span class="p">[]:</span>
+        <span class="k">print</span> <span class="s">&#39;No detections made&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Triggered file list:&#39;</span>
+    <span class="k">for</span> <span class="n">wavfile</span> <span class="ow">in</span> <span class="n">wavelist</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">wavfile</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

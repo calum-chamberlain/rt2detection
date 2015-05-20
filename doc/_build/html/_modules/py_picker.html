@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>py_picker &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-STALTA">STALTA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-mag_conv">mag_conv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>py_picker</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for py_picker</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Python automated seismic picker implimentations for the rt2detection package.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="seism_picker"><a class="viewcode-back" href="../modules.html#py_picker.seism_picker">[docs]</a><span class="k">def</span> <span class="nf">seism_picker</span><span class="p">(</span><span class="n">picktype</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">stream</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simple cover function for th eobspy picking modules</span>
+
+<span class="sd">    :type picktype: String</span>
+<span class="sd">    :param picktype: Eother Baer or AR for Auto-regressive</span>
+<span class="sd">    :type args: Class</span>
+<span class="sd">    :param args: List of appropriate arguments for the chosen pick type -</span>
+<span class="sd">                 defined in picker_par.py</span>
+<span class="sd">    :type Stream: obspy.Stream</span>
+
+<span class="sd">    :return: p_pick, s_pick</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="n">picktype</span> <span class="o">==</span> <span class="s">&#39;Baer&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">obspy.signal.trigger</span> <span class="kn">import</span> <span class="n">pkBaer</span>
+        <span class="n">p_pick</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">phase_info</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">station_info</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">trp_pick</span><span class="p">,</span> <span class="n">trphase_info</span> <span class="o">=</span> <span class="n">pkBaer</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span>
+                                        <span class="n">args</span><span class="o">.</span><span class="n">tdownmax</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">tupevent</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">thr1</span><span class="p">,</span>
+                                        <span class="n">args</span><span class="o">.</span><span class="n">thr2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">preset_len</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">p_dur</span><span class="p">)</span>
+                                        <span class="c"># 20, 60, 7.0, 12.0, 100, 100)</span>
+            <span class="n">trp_pick</span><span class="o">=</span><span class="n">trp_pick</span><span class="o">/</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
+            <span class="n">p_pick</span><span class="o">+=</span><span class="p">[</span><span class="n">trp_pick</span><span class="p">]</span>
+            <span class="n">phase_info</span><span class="o">+=</span><span class="p">[</span><span class="n">trphase_info</span><span class="p">]</span>
+            <span class="n">station_info</span><span class="o">+=</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="o">+</span><span class="s">&#39;.&#39;</span><span class="o">+</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">p_pick</span><span class="p">,</span> <span class="n">phase_info</span><span class="p">,</span> <span class="n">station_info</span>
+    <span class="k">elif</span> <span class="n">picktype</span> <span class="o">==</span> <span class="s">&#39;AR&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&#39;Stream must be three channels from the same station&#39;</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="kn">from</span> <span class="nn">obspy.signal.trigger</span> <span class="kn">import</span> <span class="n">arPick</span>
+        <span class="n">tr1</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;*Z&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tr2</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;*N&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">tr2</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;*1&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tr3</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;*E&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">tr3</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s">&#39;*2&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
+        <span class="n">p_pick</span><span class="p">,</span> <span class="n">s_pick</span> <span class="o">=</span> <span class="n">arPick</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tr2</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tr3</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span>
+                                <span class="n">args</span><span class="o">.</span><span class="n">f1</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">f2</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">lta_p</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sta_p</span><span class="p">,</span>
+                                <span class="n">args</span><span class="o">.</span><span class="n">lta_s</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sta_s</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">m_p</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">m_s</span><span class="p">,</span>
+                                <span class="n">args</span><span class="o">.</span><span class="n">l_p</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">l_s</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">s_pick</span><span class="p">)</span>
+                        <span class="c">#1.0, 20.0, 1.0, 0.1, 4.0, 1.0, 2, 8, 0.1, 0.2)</span>
+        <span class="k">return</span> <span class="n">p_pick</span><span class="p">,</span> <span class="n">s_pick</span>
+</div>
+<div class="viewcode-block" id="picker_plot"><a class="viewcode-back" href="../modules.html#py_picker.picker_plot">[docs]</a><span class="k">def</span> <span class="nf">picker_plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">picks</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">savefile</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plotting fucntion for the picker routine - this will pot the waveforms and</span>
+<span class="sd">    the picks to allow for pick veriication.</span>
+
+<span class="sd">    :type stream: obspy.Stream</span>
+<span class="sd">    :type picks: list of obspy.UTCDateTime</span>
+<span class="sd">    :type types: list of string</span>
+<span class="sd">    :type show: Boolean, optional</span>
+<span class="sd">    :type savefile: String, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+    <span class="kn">import</span> <span class="nn">datetime</span> <span class="kn">as</span> <span class="nn">dt</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="kn">as</span> <span class="nn">mpdates</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;highpass&#39;</span><span class="p">,</span><span class="n">freq</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">corners</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zerophase</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">plotno</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">&#39;Picks&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="n">dates</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="n">date</span><span class="o">/</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span> <span class="n">plotno</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s">&#39;k-&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">0.001</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">),</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">types</span><span class="p">[</span><span class="n">plotno</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;P&#39;</span><span class="p">:</span> <span class="c">#or types[plotno-1][1]==&#39;P&#39;:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">picks</span><span class="p">[</span><span class="n">plotno</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">picks</span><span class="p">[</span><span class="n">plotno</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> \
+                    <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">+</span><span class="mi">10</span><span class="p">),</span> <span class="s">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">types</span><span class="p">[</span><span class="n">plotno</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;S&#39;</span><span class="p">:</span>
+             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">picks</span><span class="p">[</span><span class="n">plotno</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">picks</span><span class="p">[</span><span class="n">plotno</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> \
+                    <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">+</span><span class="mi">10</span><span class="p">),</span> <span class="s">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">plotno</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">visible</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[:]],</span> <span class="n">visible</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Time [s]&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">savefile</span><span class="p">)</span>
+    <span class="k">return</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Requires two arguments, picker type (either AR or Baer) and the wavefile path&#39;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">picktype</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">wavfile</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">==</span><span class="mi">4</span><span class="p">:</span>
+            <span class="n">station</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">read</span>
+    <span class="n">stream</span><span class="o">=</span><span class="n">read</span><span class="p">(</span><span class="n">wavfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;station&#39;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+        <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;/home/calumch/my_programs/Built/rt2detection&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">par</span> <span class="kn">import</span> <span class="n">picker_par</span> <span class="k">as</span> <span class="n">defaults</span>
+    <span class="k">if</span> <span class="n">picktype</span><span class="o">==</span><span class="s">&#39;AR&#39;</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">AR_args</span>
+        <span class="n">p_pick</span><span class="p">,</span> <span class="n">s_pick</span><span class="o">=</span><span class="n">seism_picker</span><span class="p">(</span><span class="n">picktype</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&#39;P-pick at: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">+</span><span class="n">p_pick</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&#39;S-pick at: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">+</span><span class="n">s_pick</span><span class="p">)</span>
+        <span class="n">picker_plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,[</span><span class="n">p_pick</span><span class="p">,</span><span class="n">s_pick</span><span class="p">,</span><span class="n">s_pick</span><span class="p">],[</span><span class="s">&#39;P&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">picktype</span><span class="o">==</span><span class="s">&#39;Baer&#39;</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">Baer_args</span>
+        <span class="n">p_pick</span><span class="p">,</span> <span class="n">phase_info</span><span class="p">,</span> <span class="n">station_info</span><span class="o">=</span><span class="n">seism_picker</span><span class="p">(</span><span class="n">picktype</span><span class="p">,</span><span class="n">args</span><span class="p">,</span><span class="n">stream</span><span class="p">)</span>
+        <span class="n">pick_types</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">p_pick</span><span class="p">)):</span>
+            <span class="k">print</span> <span class="s">&#39;P-pick at: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">+</span><span class="n">p_pick</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">+</span>\
+                    <span class="s">&#39; of type: &#39;</span><span class="o">+</span><span class="n">phase_info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="s">&#39; on channel &#39;</span><span class="o">+</span><span class="n">station_info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">phase_info</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">==</span><span class="mi">4</span><span class="p">:</span>
+                <span class="n">pick_types</span><span class="o">+=</span><span class="p">[</span><span class="n">phase_info</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pick_types</span><span class="o">+=</span><span class="p">[</span><span class="s">&#39;NA&#39;</span><span class="p">]</span>
+        <span class="k">print</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">p_pick</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">pick_types</span><span class="p">))</span>
+        <span class="n">picker_plot</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span><span class="n">p_pick</span><span class="p">,</span><span class="n">pick_types</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&#39;Picktype is not AR or Baer, and it must be&#39;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
