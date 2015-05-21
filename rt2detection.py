@@ -399,7 +399,9 @@ if __name__ == '__main__':
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
                     st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 try:
-                    st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    st.detrend('simple')
+                    st.merge(fill_value='interpolate') # merge data filling gaps
+                    #st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -416,7 +418,8 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    st.merge(fill_value=0)
+                    st.detrend('simple')
+                    st.merge(fill_value='interpolate')
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
