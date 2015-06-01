@@ -240,6 +240,7 @@ if __name__ == '__main__':
             plot_data_cont(defaults.stalist,'Data_continuity.eps','eps')
         except:
             print 'Did not find station continuity files'
+
     ######################## Archive data #########################################
     from obspy import read as obsread
     from obspy import UTCDateTime, Stream, Trace
@@ -377,6 +378,8 @@ if __name__ == '__main__':
                     st=st_dummy
                     st.merge(fill_value=0)
 
+
+
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
                     print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
@@ -429,9 +432,28 @@ if __name__ == '__main__':
                             str(st[0].stats.starttime.hour)+':'+\
                             str(st[0].stats.starttime.minute)+':'+\
                             str(st[0].stats.starttime.second)
+
+##########################Download GeoNet data for day if required############
+            if defaults.getGeoNet:
+                print 'Downloading GeoNet data for the day'
+                oldlen = len(st)
+                import subprocess
+                pad=''
+                for station in defaults.geostalist:
+                    if len(station.name) == 3:
+                        pad = '..'
+                    elif len(station.name) == 4:
+                        pad = '.'
+                    for channel in station.channels:
+                        subprocess.call(['java','-jar','pro/GeoNetCWBQuery-4.2.0-bin.jar',
+                            '-d','1d','-t','ms','-b',day.year+day.julday+' 00:00:00',
+                            '-s','NZ'+station.name+pad+channel,
+                            '-o',daypath+'/%z%y%M%D.%s.%c.ms'])
+                        st+=read(daypath+'/*.'+station.name+'.'+channel+'.ms')
+                print 'I have downloaded and read in an extra '+\
+                        str(len(st)-oldlen)+' traces'
+
             prevdaypath=daypath
-
-
             # Change the channel names from those output by rt2ms (101,102,103) to the
             # true channel names taken from the station definitions above
             if defaults.rename:
@@ -443,11 +465,11 @@ if __name__ == '__main__':
                         else:
                             ksta+=1
                     if tr.stats.channel == '101':
-                        tr.stats.channel=defaults.stalist[staid].ch1
+                        tr.stats.channel=defaults.stalist[staid].channels[0]
                     if tr.stats.channel == '102':
-                        tr.stats.channel=defaults.stalist[staid].ch2
+                        tr.stats.channel=defaults.stalist[staid].channels[1]
                     if tr.stats.channel == '103':
-                        tr.stats.channel=defaults.stalist[staid].ch3
+                        tr.stats.channel=defaults.stalist[staid].channels[3]
 
 
             # Archive data here

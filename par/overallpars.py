@@ -54,51 +54,57 @@ alltime=False   # Set to true to run through all time, will desregard start and
                 # end time arguments
 startD='2014/03/26' # Start time for alltime=False in yyyy/mm/dd
 endD = '2015/03/10' # End time for alltime=False in yyyy/mm/dd
+getGeoNet = True# Boolean to get geonet data, if true requires the geostalist
+                # variable to be complete.
 # Define local class
 class STATION:
     'Station information for seismic station'
     stacount=0
-    def __init__(self,name, netcode, loccode, das, ch1, ch2, ch3):
+    def __init__(self,name, netcode, loccode, das, channels):
         self.name=name
         self.netcode=netcode
         self.loccode=loccode
         self.das=das
-        self.ch1=ch1
-        self.ch2=ch2
-        self.ch3=ch3
+        self.channels=channels
         self.stacount+=1
 
 #########################USER EDIT SECTION-SETUP YOUR DATABASE#################
 
 # Build station database: name, netcode, loccode, das, 101, 102, 103 (wired channels)
-stalist=[STATION('COSA','AF','10','915E','SHZ','SH1','SH2'),
-        STATION('LABE','AF','10','915C','SHZ','SHN','SHE'),
-        STATION('COVA','AF','10','BAD5','SHZ','SHN','SHE'),
-        STATION('EORO','AF','10','A970','SHZ','SHN','SHE'),
-        STATION('FRAN','AF','10','A852','SHZ','SH1','SH2'),
-        STATION('GOVA','AF','10','916O','SHZ','SHN','SHE'),
-        STATION('LARB','AF','10','9C99','SHZ','SHN','SHE'),
-        STATION('MTBA','AF','10','BAEE','SHZ','SHN','SHE'),
-        STATION('MTFE','AF','10','9F9A','SHZ','SHN','SHE'),
-        STATION('MTFO','AF','10','915F','SHZ','SHN','SHE'),
-        STATION('NOLA','AF','10','9F97','SHZ','SHN','SHE'),
-        STATION('POCR','AF','10','A979','SHZ','SH1','SH2'),
-        STATION('SOLU','AF','10','BAD9','SHZ','SHN','SHE'),
-        STATION('WHAT','AF','10','A895','SHZ','SH1','SH2'),
-        STATION('REYN','AF','10','','SHZ','SH1','SH2'),
-        STATION('WHYM','AF','10','AC14','SHZ','SHN','SHE')]
+stalist=[STATION('COSA','AF','10','915E',('SHZ','SH1','SH2')),
+        STATION('LABE','AF','10','915C',('SHZ','SHN','SHE')),
+        STATION('COVA','AF','10','BAD5',('SHZ','SHN','SHE')),
+        STATION('EORO','AF','10','A970',('SHZ','SHN','SHE')),
+        STATION('FRAN','AF','10','A852',('SHZ','SH1','SH2')),
+        STATION('GOVA','AF','10','916O',('SHZ','SHN','SHE')),
+        STATION('LARB','AF','10','9C99',('SHZ','SHN','SHE')),
+        STATION('MTBA','AF','10','BAEE',('SHZ','SHN','SHE')),
+        STATION('MTFE','AF','10','9F9A',('SHZ','SHN','SHE')),
+        STATION('MTFO','AF','10','915F',('SHZ','SHN','SHE')),
+        STATION('NOLA','AF','10','9F97',('SHZ','SHN','SHE')),
+        STATION('POCR','AF','10','A979',('SHZ','SH1','SH2')),
+        STATION('SOLU','AF','10','BAD9',('SHZ','SHN','SHE')),
+        STATION('WHAT','AF','10','A895',('SHZ','SH1','SH2')),
+        STATION('REYN','AF','10','',('SHZ','SH1','SH2')),
+        STATION('WHYM','AF','10','AC14',('SHZ','SHN','SHE'))]
 
-# stalist=[STATION('ASPR','CO','10','915A','HHZ','HH1','HH2'),
-        # STATION('HUVA','CO','10','9F95','HHZ','HH1','HH2'),
-        # STATION('KING','CO','10','915D','HHZ','HH1','HH2'),
-        # STATION('MORV','CO','10','915B','HHZ','HH1','HH2'),
-        # STATION('NOBU','CO','10','AC09','HHZ','HH1','HH2'),
-        # STATION('STBA','CO','10','AC40','HHZ','HH1','HH2'),
-        # STATION('TEPE','CO','10','9F96','HHZ','HH1','HH2')]
+# stalist=[STATION('ASPR','CO','10','915A',('HHZ','HH1','HH2')),
+        # STATION('HUVA','CO','10','9F95',('HHZ','HH1','HH2')),
+        # STATION('KING','CO','10','915D',('HHZ','HH1','HH2')),
+        # STATION('MORV','CO','10','915B',('HHZ','HH1','HH2')),
+        # STATION('NOBU','CO','10','AC09',('HHZ','HH1','HH2')),
+        # STATION('STBA','CO','10','AC40',('HHZ','HH1','HH2')),
+        # STATION('TEPE','CO','10','9F96',('HHZ','HH1','HH2'))]
 
-# stalist=[STATION('WMSZ','DF','10','953D','HHZ','HHN','HHE'),
-       # STATION('WPSZ','DF','10','92D1','HHZ','HHN','HHE'),
-       # STATION('WDSZ','DF','10','9337','HHZ','HHN','HHE'),
-       # STATION('WTSZ','DF','10','9793','HHZ','HHN','HHE'),
-       # STATION('WQSZ','DF','10','A895','HHZ','HHN','HHE')]
+# stalist=[STATION('WMSZ','DF','10','953D',('HHZ','HHN','HHE')),
+       # STATION('WPSZ','DF','10','92D1',('HHZ','HHN','HHE')),
+       # STATION('WDSZ','DF','10','9337',('HHZ','HHN','HHE')),
+       # STATION('WTSZ','DF','10','9793',('HHZ','HHN','HHE')),
+       # STATION('WQSZ','DF','10','A895',('HHZ','HHN','HHE'))]
 
+#######################USER EIDT SECTION, SET UP STATIONS YOU NEED TO DOWNLOAD#
+geostalist=[STATION('WKZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('MLZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('JCZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('EAZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('MSZ','NZ','10','',('HHZ','HHE','HHN'))]
