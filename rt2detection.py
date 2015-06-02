@@ -138,6 +138,7 @@ if __name__ == '__main__':
     # Import necessary libraries
     from subprocess import call
     import sys, datetime
+    from copy import deepcopy
 
     # Open log-file
     f = open('rt2detection_log.txt','w')
@@ -295,7 +296,8 @@ if __name__ == '__main__':
                 st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
             print 'Merging data'
             try:
-                st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                st = st.detrend('simple')    # Detrend data before filling
+                st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -312,7 +314,8 @@ if __name__ == '__main__':
                         else:
                             st_dummy=Stream(tr)
                 st=st_dummy
-                st.merge(fill_value=0)
+                st = st.detrend('simple')
+                st.merge(fill_value='interpolate')
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
                 print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
@@ -359,7 +362,8 @@ if __name__ == '__main__':
                     st+=obsread(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
 
                 try:
-                    st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    st = st.detrend('simple')
+                    st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -376,7 +380,8 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    st.merge(fill_value=0)
+                    st = st.detrend('simple')
+                    st.merge(fill_value='interpolate')
 
 
 
@@ -478,7 +483,7 @@ if __name__ == '__main__':
                     daystart=UTCDateTime(yeardir[1:5]+daydir[1:4])
                     # print daystart
                     # print daystart+86400
-                    tr=tr.slice(daystart,daystart+86400)
+                    tr=tr.trim(daystart,daystart+86400)
                     Ypath=defaults.arcdir+'/'+yeardir
                     Dpath=Ypath+'/'+daydir
                     if not os.path.isdir(Ypath):
@@ -498,13 +503,14 @@ if __name__ == '__main__':
                 datalen=dataend-datastart
                 if datalen > defaults.filelenwant:
                     for hour in range(1,int(round(datalen/defaults.filelenwant)+1)):
+                        st1=deepcopy(st)
                         # st1=st.copy() # Copy file to preserve the original data
                         cutstart=datastart+((hour-1)*defaults.filelenwant)
                         # Edit cut start to be cutting at the hour
                         cutstart=UTCDateTime(cutstart.year,cutstart.month,\
                                              cutstart.day,cutstart.hour)
                         cutend=cutstart+defaults.filelenwant
-                        st1=st.slice(cutstart,cutend)
+                        st1=st1.trim(cutstart,cutend)
                         filename=defaults.contbase+'/'+str(st1[0].stats.starttime.year)+'/'+\
                                 str(st1[0].stats.starttime.month).zfill(2)+'/'+\
                                 str(st1[0].stats.starttime.year)+'-'+\

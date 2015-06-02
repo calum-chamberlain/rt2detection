@@ -54,7 +54,7 @@ alltime=False   # Set to true to run through all time, will desregard start and
                 # end time arguments
 startD='2014/03/26' # Start time for alltime=False in yyyy/mm/dd
 endD = '2015/03/10' # End time for alltime=False in yyyy/mm/dd
-getGeoNet = True# Boolean to get geonet data, if true requires the geostalist
+getGeoNet =False# Boolean to get geonet data, if true requires the geostalist
                 # variable to be complete.
 # Define local class
 class STATION:
