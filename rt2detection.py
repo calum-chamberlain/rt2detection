@@ -258,7 +258,7 @@ if __name__ == '__main__':
                 daylist=[]
                 for date in rundates:
                     daylist+=glob.glob(defaults.outdir+'/*/Y'+str(date.year)+\
-                                       '/R'+str(date.julday).zfill(3))+'.01'
+                            '/R'+str(date.julday).zfill(3)+'.01')
             else:
                 daylist=[]
                 for date in rundates:
