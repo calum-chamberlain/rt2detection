@@ -297,7 +297,7 @@ if __name__ == '__main__':
             print 'Merging data'
             try:
                 st = st.detrend('simple')    # Detrend data before filling
-                st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
+                st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -315,7 +315,7 @@ if __name__ == '__main__':
                             st_dummy=Stream(tr)
                 st=st_dummy
                 st = st.detrend('simple')
-                st.merge(fill_value='interpolate')
+                st.merge(fill_value=0)
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
                 print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
@@ -363,7 +363,7 @@ if __name__ == '__main__':
 
                 try:
                     st = st.detrend('simple')
-                    st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
+                    st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -381,7 +381,7 @@ if __name__ == '__main__':
                                 st_dummy=Stream(tr)
                     st=st_dummy
                     st = st.detrend('simple')
-                    st.merge(fill_value='interpolate')
+                    st.merge(fill_value=0)
 
 
 
@@ -408,7 +408,7 @@ if __name__ == '__main__':
                     st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 try:
                     st.detrend('simple')
-                    st.merge(fill_value='interpolate') # merge data filling gaps
+                    st.merge(fill_value=0) # merge data filling gaps
                     #st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
                 except:
@@ -427,7 +427,7 @@ if __name__ == '__main__':
                                 st_dummy=Stream(tr)
                     st=st_dummy
                     st.detrend('simple')
-                    st.merge(fill_value='interpolate')
+                    st.merge(fill_value=0)
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
