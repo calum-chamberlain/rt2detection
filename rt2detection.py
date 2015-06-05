@@ -296,7 +296,8 @@ if __name__ == '__main__':
                 st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
             print 'Merging data'
             try:
-                st = st.detrend('simple')    # Detrend data before filling
+                for tr in st:
+                    tr = tr.detrend('simple')
                 st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
@@ -314,7 +315,8 @@ if __name__ == '__main__':
                         else:
                             st_dummy=Stream(tr)
                 st=st_dummy
-                st = st.detrend('simple')
+                for tr in st:
+                    tr = tr.detrend('simple')
                 st.merge(fill_value=0)
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
@@ -362,7 +364,8 @@ if __name__ == '__main__':
                     st+=obsread(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
 
                 try:
-                    st = st.detrend('simple')
+                    for tr in st:
+                        tr = tr.detrend('simple')
                     st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
@@ -380,7 +383,8 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    st = st.detrend('simple')
+                    for tr in st:
+                        tr = tr.detrend('simple')
                     st.merge(fill_value=0)
 
 
@@ -407,7 +411,8 @@ if __name__ == '__main__':
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
                     st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 try:
-                    st.detrend('simple')
+                    for tr in st:
+                        tr = tr.detrend('simple')
                     st.merge(fill_value=0) # merge data filling gaps
                     #st.merge(fill_value=0)  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
@@ -426,7 +431,8 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    st.detrend('simple')
+                    for tr in st:
+                        tr = tr.detrend('simple')
                     st.merge(fill_value=0)
 
                 if defaults.debug==1:
