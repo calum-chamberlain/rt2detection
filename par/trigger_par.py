@@ -18,9 +18,5 @@ highcut=20  # High cut for banpdass filter in Hz
 lowcut=5    # Low cut for bandpass filter in Hz
 precut=90   # Time to cut before the trigger in seconds
 postcut=150 # Time to cut after the trigger in seconds
-<<<<<<< HEAD
 net='SAMTR' # Network code, must be 5 characters, if less fill with underscores
-=======
-net='COSAW' # Network code, must be 5 characters, if less fill with underscores
->>>>>>> 4eab03d65c72a9dc259ba578e5b556d1ab05752a
 trigout='Y' # Set to 'Y' to output triggered files, will be output locally
