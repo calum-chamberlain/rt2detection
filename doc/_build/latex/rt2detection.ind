@@ -1,0 +1,42 @@
+\begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter A
+  \item AR\_ARGS (class in picker\_par), \hyperpage{9}
+
+  \indexspace
+  \bigletter B
+  \item BAER\_ARGS (class in picker\_par), \hyperpage{9}
+  \item blanksfile() (in module Sfile\_util), \hyperpage{7}
+
+  \indexspace
+  \bigletter O
+  \item overallpars (module), \hyperpage{9}
+
+  \indexspace
+  \bigletter P
+  \item PICK (class in Sfile\_util), \hyperpage{7}
+  \item picker\_par (module), \hyperpage{9}
+  \item picker\_plot() (in module py\_picker), \hyperpage{8}
+  \item populateSfile() (in module Sfile\_util), \hyperpage{7}
+  \item py\_picker (module), \hyperpage{8}
+
+  \indexspace
+  \bigletter R
+  \item readpicks() (in module Sfile\_util), \hyperpage{7}
+  \item readwavename() (in module Sfile\_util), \hyperpage{7}
+  \item rt2detection (module), \hyperpage{5}
+
+  \indexspace
+  \bigletter S
+  \item seism\_picker() (in module py\_picker), \hyperpage{8}
+  \item Sfile\_util (module), \hyperpage{7}
+  \item stacount (overallpars.STATION attribute), \hyperpage{9}
+  \item STALTA (module), \hyperpage{8}
+  \item STATION (class in overallpars), \hyperpage{9}
+
+  \indexspace
+  \bigletter T
+  \item trigger\_par (module), \hyperpage{9}
+
+\end{theindex}

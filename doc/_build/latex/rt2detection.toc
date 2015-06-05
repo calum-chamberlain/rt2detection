@@ -1,0 +1,18 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Manual for rt2detection package.}{3}{chapter.1}
+\contentsline {section}{\numberline {1.1}Introduction}{3}{section.1.1}
+\contentsline {section}{\numberline {1.2}Installation}{3}{section.1.2}
+\contentsline {section}{\numberline {1.3}Structure}{4}{section.1.3}
+\contentsline {section}{\numberline {1.4}Python routines}{4}{section.1.4}
+\contentsline {chapter}{\numberline {2}Main}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}rt2detection}{5}{section.2.1}
+\contentsline {chapter}{\numberline {3}Pro}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Sfile\_util}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}py\_picker}{8}{section.3.2}
+\contentsline {section}{\numberline {3.3}STALTA}{8}{section.3.3}
+\contentsline {chapter}{\numberline {4}Par}{9}{chapter.4}
+\contentsline {section}{\numberline {4.1}overallpars}{9}{section.4.1}
+\contentsline {section}{\numberline {4.2}picker\_par}{9}{section.4.2}
+\contentsline {section}{\numberline {4.3}trigger\_par}{9}{section.4.3}
+\contentsline {chapter}{Python Module Index}{11}{section*.14}
+\contentsline {chapter}{Index}{13}{section*.15}

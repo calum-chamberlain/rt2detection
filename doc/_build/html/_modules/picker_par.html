@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>picker_par &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-STALTA">STALTA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-mag_conv">mag_conv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>picker_par</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for picker_par</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Python imput arguments for the python auto-pickers</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c"># Arguments for the Baer picker</span>
+<div class="viewcode-block" id="BAER_ARGS"><a class="viewcode-back" href="../modules.html#picker_par.BAER_ARGS">[docs]</a><span class="k">class</span> <span class="nc">BAER_ARGS</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Input arguments for the Baer picker&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tdownmax</span><span class="p">,</span> <span class="n">tupevent</span><span class="p">,</span> <span class="n">thr1</span><span class="p">,</span> <span class="n">thr2</span><span class="p">,</span>
+                 <span class="n">preset_len</span><span class="p">,</span> <span class="n">p_dur</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdownmax</span><span class="o">=</span><span class="n">tdownmax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tupevent</span><span class="o">=</span><span class="n">tupevent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thr1</span><span class="o">=</span><span class="n">thr1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thr2</span><span class="o">=</span><span class="n">thr2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preset_len</span><span class="o">=</span><span class="n">preset_len</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_dur</span><span class="o">=</span><span class="n">p_dur</span>
+</div>
+<div class="viewcode-block" id="AR_ARGS"><a class="viewcode-back" href="../modules.html#picker_par.AR_ARGS">[docs]</a><span class="k">class</span> <span class="nc">AR_ARGS</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Input arguments for the AR picker&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">lta_p</span><span class="p">,</span> <span class="n">sta_p</span><span class="p">,</span> <span class="n">lta_s</span><span class="p">,</span> <span class="n">sta_s</span><span class="p">,</span>
+                <span class="n">m_p</span><span class="p">,</span> <span class="n">m_s</span><span class="p">,</span> <span class="n">l_p</span><span class="p">,</span> <span class="n">l_s</span><span class="p">,</span> <span class="n">s_pick</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f1</span><span class="o">=</span><span class="n">f1</span> <span class="c"># Lower bandpass frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f2</span><span class="o">=</span><span class="n">f2</span> <span class="c"># upper bandpass frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lta_p</span><span class="o">=</span><span class="n">lta_p</span> <span class="c">#length of LTA for p arrival in seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sta_p</span><span class="o">=</span><span class="n">sta_p</span> <span class="c"># length of STA for p arrival in seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lta_s</span><span class="o">=</span><span class="n">lta_s</span> <span class="c"># length of LTA for s arrival in seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sta_s</span><span class="o">=</span><span class="n">sta_s</span> <span class="c"># length of STA for s arrival in seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_p</span><span class="o">=</span><span class="n">m_p</span> <span class="c"># number of AR coefficients for p arrival</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_s</span><span class="o">=</span><span class="n">m_s</span> <span class="c"># number of AR coefficients for s arrival</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_p</span><span class="o">=</span><span class="n">l_p</span> <span class="c"># length of variance window for p arrival in seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_s</span><span class="o">=</span><span class="n">l_s</span> <span class="c"># length of variance window for s arrival in seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_pick</span><span class="o">=</span><span class="n">s_pick</span> <span class="c"># if True also pick S, otherwise only P</span>
+
+<span class="c">#################### DEFINE DEAFULT VALUES####################################</span></div>
+<span class="n">Baer_args</span><span class="o">=</span><span class="n">BAER_ARGS</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">AR_args</span><span class="o">=</span><span class="n">AR_ARGS</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+This file is parameter file for rtquake. 
+Only the lines with recognized keyword under Par 1 will be read. 
+The comments have no importance.  
+Columns Par 1-Par 2 start in columns 41,51.
+
+keep	locate		Action
+-----------------------------
+  -1	   0/1		A new s-file is created with no phase-picks.
+			No location. This option is used for RTQUAKE: detection + no picks + no location
+
+   0	   0/1		A new s-file is created with the detection phase-picks only. No location.
+			
+   1        0		A new s-file is created with all phase-picks from FilterPicker.
+			No location. This option is used for RTQUAKE: detection + NO location
+
+   1        1		A new s-file is created with all phase-picks from FilterPicker.
+			Automatic location. Phases causing high residuals will be removed automatically
+			until MAX RESIDUAL (see below) and or MINSTALOc (see below) is reached.
+			The s-file will contain the location and the phase-picks that are left.
+			This option is used for RTQUAKE: detection + autoloc
+
+All keywords in capital letters.
+
+KEYWORD............Comments.............Par 1.....Par 2
+----------------------------------------how to record s-files-----------------------------------------------
+KEEP               1:sfile,-1:no sfile  1
+----------------------------------------automatic location or not-------------------------------------------
+LOCATION           1:Locate,0:No Locate 1
+----------------------------------------automatic local magnitude or not------------------------------------
+AUTOMAG            1 compute Ml,Mw      1
+----------------------------------------name of SEISAN database---------------------------------------------
+DBASENAME          For SEISAN           RTAF_
+----------------------------------------SEISAN catalogue for waveforms--------------------------------------
+WAVEDIR            For SEISAN           WAV
+----------------------------------------store waveforms in database or not----------------------------------
+WAVE_DB_ACTIVE     For SEISAN           1
+----------------------------------------max number of iterations discarding phases--------------------------
+ITERATION          Number of iterations 200.0
+----------------------------------------maximum acceptable residual to do location--------------------------
+MAX_RESIDUAL       Maximum residual     1.5
+----------------------------------------minimum no of stations with phase reading to do location------------
+MINSTALOC          Min stat to locate   4
+----------------------------------------separate sub networks or all as one---------------------------------
+ALLSUBNETS         0-sep.net >0 one net 0
+----------------------------------------mail or not---------------------------------------------------------
+MAIL1              0-no mail,1-mail     1         calum.chamberlain@vuw.ac.nz
+MAIL2              0-no mail,1-mail     0         receiver2@gmail.com
+MAIL3              0-no mail,1-mail     0         whatever@mail.com
+MAIL4              0-no mail,1-mail     0         any@mail.com
+MAIL5              0-no mail,1 mail     0         to_you@yahoo.com
+----------------------------------------total delay buffer trigger------------------------------------------
+DELAY_BUFFER       Minutes delaybuffer  20.0
+----------------------------------------where to set current time in delay buffer---------------------------
+MINUT_NOW          Minut current data   17.0
+----------------------------------------delay for trigger window--------------------------------------------
+DET_DELAY          Detection delay      2.0
+----------------------------------------array-propagation-window--------------------------------------------
+APW                Array prop. window   30.0
+----------------------------------------seconds to shufle buffer don't change---------------------------
+SECONDS2SHUFLE     Seconds to shift     4.0
+----------------------------------------pre-event in seconds------------------------------------------------
+PRE_EVENT          Pre-event (seconds)  30.0
+----------------------------------------post-event in seconds-----------------------------------------------
+POST_EVENT         Post-event (seconds) 120.0
+----------------------------------------no of days to save heliplots----------------------------------------
+HELI_DAYS          No of days to save   5.0
+----------------------------------------filterpicker don't change-------------------------------------------
+FILTERWINDOW       FilterPicker         300.0
+LTWINDOW           FilterPicker         500.0
+THRESHOLD1         FilterPicker         10.0
+THRESHOLD2         FilterPicker         10.0
+TUPEVENT           FilterPicker         20.0
+----------------------------------------sound on or off when trigger----------------------------------------
+SOUND              1-sound, 0-nosound   0.0
+----------------------------------------printing or not-----------------------------------------------------
+PRINTING           Debug printing       0

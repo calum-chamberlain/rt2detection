@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Manual for rt2detection package. &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="Main" href="modules.html"/>
+        <link rel="prev" title="Welcome to rt2detection’s documentation!" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-STALTA">STALTA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Manual for rt2detection package.</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/intro.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="manual-for-rt2detection-package">
+<h1>Manual for rt2detection package.<a class="headerlink" href="#manual-for-rt2detection-package" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div>Calum Chamberlain, SGEES, Victoria University of Wellington, PO Box 600, Wellington 6140\calum.chamberlain&#64;vuw.ac.nz\</div></blockquote>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This manual is intended as a user guide for the rt2detection package, written in python, for
+the routine processing of seismic data collected on reftek RT130 dataloggers.  This package
+is fairly minimal and rather than re-doing a lot of processing steps calls upon external
+routines that need to be installed seperately (this is covered in the installation section).</p>
+<p>The heart of this processing flow is that we want to simply take raw data through to triggered,
+multiplexed miniseed files which can be read in by seisan.  This processing flow also includes
+automatic picking capability, although this is by no means optimized and the parameters for this
+picker should be optimized for the network you are working with.  The same can be said of the
+parameters used in the STA-LTA detection routine.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>As the main linking code is written in python, there is little compliation to be done, however
+this package does require the following to be installed on your machine (according to each
+programs install instructions):</p>
+<blockquote>
+<div>Pascal tools (<a class="reference external" href="http://www.passcal.nmt.edu/content/software-resources">http://www.passcal.nmt.edu/content/software-resources</a>)
+Obspy (<a class="reference external" href="https://github.com/obspy/obspy/wiki">https://github.com/obspy/obspy/wiki</a>)</div></blockquote>
+<p>Further to this, to use the automated picker you will need to compile the C code found
+in the emph{picker} directory if this distribution, for this you will need a C compiler
+(gcc has been tested and works well, nothing else has been tested).  Once you have
+installed a C compiler you should change the variables in both picker/src/Makefile and
+picker/libmseed/Makefile to the path of your C compiler (or, if you have installed it gcc
+correctly, just to gcc).  You can then compile the picker by typing, when in the picker
+directory:
+&gt;make clean
+&gt;make rtquake
+&gt;cp rdtrigL ../.</p>
+<p>You should also run the seisan commands:
+&gt;remodl
+&gt;setbrn
+to set the local travel time tables required for the hypo71 location algorithm.</p>
+<p>If you have not generated the seisan databases that you want the data to be stored in
+(in the REA and WAV directories of seisan) you should run:\
+&gt;makerea\
+to generate them before running any of the codes.</p>
+<p>Now you should be ready to roll.</p>
+</div>
+<div class="section" id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>This distribution contains five directories:</dt>
+<dd>doc
+picker
+RT_data
+MS_data
+Merged_data</dd>
+</dl>
+<p>The doc directory contains this document about the package.  The picker directory contains
+the source code and libraries for the picking routine.  The RT_data directory is where
+you should upload your raw reftek data to once you have run it through the pascal tools,
+neo software. emph{This must be uploaded in station directories, e.g. RT_data/WTSZ/misc.zip}.
+The MS_data directory will be the location of the converted, but un-merged
+miniseed data.  Merged_data will contain all of the multiplexed miniseed files, these will
+all later be cleaned when running the programs.</p>
+</div>
+<div class="section" id="python-routines">
+<h2>Python routines<a class="headerlink" href="#python-routines" title="Permalink to this headline">¶</a></h2>
+<p>rt2detection.py is the overarching routine which calls all the others.  This will
+take your data in steps from raw to triggered, picked data in the seisan database.
+The top of this file should be editted to include your parameters and network
+information.  All parameters are explained in the file. Around line 71 is the network
+information which needs to be adjusted for your network.</p>
+<p>rt2detection calls upon STALTA.py which currently runs the convenience STALTA methods
+within obspy - the parameters for this routine can be adjusted within this code, and
+again are commented as to what they do.</p>
+<p>The final python routine, makeSfile.py simply builds empty nordic files which are then
+read in by the picking routine.</p>
+<p>Finally all files are moved to the seisan database prescribed in the rt2detection parameters.</p>
+<p>Parameters for the picker are set in the rtquake.par file.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="Main">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to rt2detection’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

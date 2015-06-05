@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>overallpars &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro.html#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-STALTA">STALTA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-mag_conv">mag_conv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>overallpars</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for overallpars</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># A python style declaration of variables used in rt2detection.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">############################Code definitions###################################</span>
+<span class="n">indir</span><span class="o">=</span><span class="s">&#39;/Volumes/Taranaki_01/data/boseca/SAMBA_mar09/&#39;</span> <span class="c"># Location of raw reftek data</span>
+<span class="n">outdir</span><span class="o">=</span><span class="s">&#39;/media/Elements/SAMBA_archive/SAMBA_mseed&#39;</span><span class="c"># Don&#39;t change temporary directory</span>
+<span class="n">contbase</span><span class="o">=</span><span class="s">&quot;/home/sw/seisan/WAV/SAMCO&quot;</span>              <span class="c"># Location for continuous</span>
+                                                  <span class="c"># waveforms</span>
+<span class="n">trigbase</span><span class="o">=</span><span class="s">&quot;/home/sw/seisan/WAV/SAMTR&quot;</span>              <span class="c"># Location for triggered</span>
+                                                  <span class="c"># waveforms</span>
+<span class="n">sfilebase</span><span class="o">=</span><span class="s">&quot;/home/sw/seisan/REA/SAMTR&quot;</span>             <span class="c"># Location for triggered</span>
+                                                  <span class="c"># s-files</span>
+<span class="n">network</span><span class="o">=</span><span class="s">&#39;SAMBA&#39;</span> <span class="c"># Needs to be five characters, e.g. SAMBA or RTAF_ - pad with</span>
+                <span class="c"># an underscore</span>
+<span class="n">archive</span><span class="o">=</span><span class="bp">False</span>   <span class="c"># Set to True to turn archiving on, will make daylong miniseed</span>
+                <span class="c"># files in the archive directory in Yyyyy/Rddd.01 type directories</span>
+<span class="n">arcdir</span><span class="o">=</span><span class="s">&#39;/Volumes/GeoPhysics_09/users-data/chambeca/SAMBA_archive/day_volumes_S&#39;</span><span class="c"># Directory to archive data to</span>
+<span class="n">detrout</span><span class="o">=</span><span class="s">&#39;obspy&#39;</span> <span class="c"># Can either use the obspy triggering routine, or the seisan</span>
+                <span class="c"># condet routine (condet is a little less simple to use and is</span>
+                <span class="c"># not yet implimented).</span>
+<span class="n">routype</span><span class="o">=</span><span class="s">&#39;classic&#39;</span> <span class="c"># Required for calum&#39;s python based routine, see that file</span>
+                  <span class="c"># for options</span>
+<span class="c">#detrout=&#39;condet&#39;</span>
+<span class="n">filelenwant</span><span class="o">=</span><span class="mi">3600</span><span class="c"># Length to output continuous data in in seconds</span>
+<span class="n">dformat</span><span class="o">=</span><span class="s">&#39;STEIM2&#39;</span><span class="c"># Format to output miniseed to</span>
+<span class="n">rmold</span><span class="o">=</span><span class="bp">False</span>     <span class="c"># Boolean - if you want to remove old data then set this to</span>
+                <span class="c"># True, it will remove the miniseed files in the MS_data</span>
+                <span class="c"># directory before it starts, then clean the non-merged data</span>
+                <span class="c"># at the end.</span>
+<span class="n">picker</span><span class="o">=</span><span class="s">&#39;FP&#39;</span>     <span class="c"># Picker method, can be set to False to not run one - calls</span>
+                <span class="c"># external routines</span>
+<span class="n">rawconv</span><span class="o">=</span><span class="bp">False</span>   <span class="c"># Set to true to look for new data in &#39;indir&#39;</span>
+<span class="n">merge</span><span class="o">=</span><span class="bp">False</span>     <span class="c"># Set to true to merge data in MS_data into multiplexed</span>
+                <span class="c"># miniseed files of length &#39;filelenwant&#39;</span>
+<span class="n">maxres</span><span class="o">=</span><span class="mf">1.5</span>      <span class="c"># If picker is used, this is the maximum residual to allow for</span>
+                <span class="c"># location</span>
+<span class="n">userID</span><span class="o">=</span><span class="s">&#39;CALU&#39;</span>   <span class="c"># Your userID in seisan, must be four characters.</span>
+<span class="c"># userID=&#39;DFDP&#39;</span>
+<span class="n">debug</span><span class="o">=</span><span class="mi">1</span>         <span class="c"># Set to 0 for a less verbose output</span>
+<span class="n">overwrite</span><span class="o">=</span><span class="bp">False</span> <span class="c"># Set to false to preserve old s-files, you will have to move</span>
+                <span class="c"># them manually in this case after the picking routine.</span>
+<span class="n">neo</span><span class="o">=</span><span class="s">&#39;False&#39;</span>     <span class="c"># If you have downloaded the data using neo then we will use</span>
+                <span class="c"># the routine for that. Currently set to string to allow for</span>
+                <span class="c"># a special &#39;Sometimes&#39; case</span>
+<span class="n">rename</span><span class="o">=</span><span class="bp">False</span>    <span class="c"># Set to True to use the channel names defined below, if false,</span>
+                <span class="c"># channels will be named as output by rt2ms (which at this stage</span>
+                <span class="c"># if called from here will be the wired 101,102,103 names.</span>
+                <span class="c"># I suggest only setting this to False if you have already</span>
+                <span class="c"># converted your raw data</span>
+
+<span class="c"># Descide whether you want it to run for all time or from a start to end date</span>
+<span class="n">alltime</span><span class="o">=</span><span class="bp">False</span>   <span class="c"># Set to true to run through all time, will desregard start and</span>
+                <span class="c"># end time arguments</span>
+<span class="n">startD</span><span class="o">=</span><span class="s">&#39;2011/11/21&#39;</span> <span class="c"># Start time for alltime=False in yyyy/mm/dd</span>
+<span class="n">endD</span> <span class="o">=</span> <span class="s">&#39;2014/03/27&#39;</span> <span class="c"># End time for alltime=False in yyyy/mm/dd</span>
+<span class="c"># Define local class</span>
+<div class="viewcode-block" id="STATION"><a class="viewcode-back" href="../modules.html#overallpars.STATION">[docs]</a><span class="k">class</span> <span class="nc">STATION</span><span class="p">:</span>
+    <span class="s">&#39;Station information for seismic station&#39;</span>
+    <span class="n">stacount</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span> <span class="n">netcode</span><span class="p">,</span> <span class="n">loccode</span><span class="p">,</span> <span class="n">das</span><span class="p">,</span> <span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span><span class="p">,</span> <span class="n">ch3</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netcode</span><span class="o">=</span><span class="n">netcode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loccode</span><span class="o">=</span><span class="n">loccode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">das</span><span class="o">=</span><span class="n">das</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch1</span><span class="o">=</span><span class="n">ch1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch2</span><span class="o">=</span><span class="n">ch2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ch3</span><span class="o">=</span><span class="n">ch3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stacount</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="c">#########################USER EDIT SECTION-SETUP YOUR DATABASE#################</span>
+
+<span class="c"># Build station database: name, netcode, loccode, das, 101, 102, 103 (wired channels)</span></div>
+<span class="n">stalist</span><span class="o">=</span><span class="p">[</span><span class="n">STATION</span><span class="p">(</span><span class="s">&#39;COSA&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;915E&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SH1&#39;</span><span class="p">,</span><span class="s">&#39;SH2&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;LABE&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;915C&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;COVA&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;BAD5&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;EORO&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;A970&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;FRAN&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;A852&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SH1&#39;</span><span class="p">,</span><span class="s">&#39;SH2&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;GOVA&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;916O&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;LARB&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;9C99&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;MTBA&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;BAEE&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;MTFE&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;9F9A&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;MTFO&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;915F&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;NOLA&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;9F97&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;POCR&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;A979&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SH1&#39;</span><span class="p">,</span><span class="s">&#39;SH2&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;SOLU&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;BAD9&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;WHAT&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SH1&#39;</span><span class="p">,</span><span class="s">&#39;SH2&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;REYN&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SH1&#39;</span><span class="p">,</span><span class="s">&#39;SH2&#39;</span><span class="p">),</span>
+        <span class="n">STATION</span><span class="p">(</span><span class="s">&#39;WHYM&#39;</span><span class="p">,</span><span class="s">&#39;AF&#39;</span><span class="p">,</span><span class="s">&#39;10&#39;</span><span class="p">,</span><span class="s">&#39;AC14&#39;</span><span class="p">,</span><span class="s">&#39;SHZ&#39;</span><span class="p">,</span><span class="s">&#39;SHN&#39;</span><span class="p">,</span><span class="s">&#39;SHE&#39;</span><span class="p">)]</span>
+
+<span class="c"># stalist=[STATION(&#39;ASPR&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;915A&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;),</span>
+        <span class="c"># STATION(&#39;HUVA&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;9F95&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;),</span>
+        <span class="c"># STATION(&#39;KING&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;915D&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;),</span>
+        <span class="c"># STATION(&#39;MORV&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;915B&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;),</span>
+        <span class="c"># STATION(&#39;NOBU&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;AC09&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;),</span>
+        <span class="c"># STATION(&#39;STBA&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;AC40&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;),</span>
+        <span class="c"># STATION(&#39;TEPE&#39;,&#39;CO&#39;,&#39;10&#39;,&#39;9F96&#39;,&#39;HHZ&#39;,&#39;HH1&#39;,&#39;HH2&#39;)]</span>
+
+<span class="c"># stalist=[STATION(&#39;WMSZ&#39;,&#39;DF&#39;,&#39;10&#39;,&#39;953D&#39;,&#39;HHZ&#39;,&#39;HHN&#39;,&#39;HHE&#39;),</span>
+       <span class="c"># STATION(&#39;WPSZ&#39;,&#39;DF&#39;,&#39;10&#39;,&#39;92D1&#39;,&#39;HHZ&#39;,&#39;HHN&#39;,&#39;HHE&#39;),</span>
+       <span class="c"># STATION(&#39;WDSZ&#39;,&#39;DF&#39;,&#39;10&#39;,&#39;9337&#39;,&#39;HHZ&#39;,&#39;HHN&#39;,&#39;HHE&#39;),</span>
+       <span class="c"># STATION(&#39;WTSZ&#39;,&#39;DF&#39;,&#39;10&#39;,&#39;9793&#39;,&#39;HHZ&#39;,&#39;HHN&#39;,&#39;HHE&#39;),</span>
+       <span class="c"># STATION(&#39;WQSZ&#39;,&#39;DF&#39;,&#39;10&#39;,&#39;A895&#39;,&#39;HHZ&#39;,&#39;HHN&#39;,&#39;HHE&#39;)]</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

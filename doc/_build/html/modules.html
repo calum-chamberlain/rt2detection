@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Main &mdash; rt2detection 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="rt2detection 0.0.1 documentation" href="index.html"/>
+        <link rel="prev" title="Manual for rt2detection package." href="intro.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> rt2detection</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Manual for rt2detection package.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#python-routines">Python routines</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Main</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-rt2detection">rt2detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#pro">Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-Sfile_util">Sfile_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-py_picker">py_picker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-STALTA">STALTA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mag_conv">mag_conv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#par">Par</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-overallpars">overallpars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-picker_par">picker_par</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-trigger_par">trigger_par</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">rt2detection</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Main</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/modules.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="main">
+<h1>Main<a class="headerlink" href="#main" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rt2detection">
+<span id="rt2detection"></span><h2>rt2detection<a class="headerlink" href="#module-rt2detection" title="Permalink to this headline">¶</a></h2>
+<p>Code designed to take data downloded using defaults.neo and located in the RT_data
+folder of this ditribution and convert this to miniseed, multiplex it and run
+seisan&#8217;s continuous detection, sta/lta routine over this data.</p>
+<p>ver 0.1 - Converts and defaults.merges data, but only for one day</p>
+<p>ver 0.2 - Converts and defaults.merges data for multiple days</p>
+<dl class="docutils">
+<dt>ver 1.1 - Converts and defaults.merges data for multiple days and can run a python</dt>
+<dd>detection routine (STA/LTA) over the data</dd>
+<dt>ver 2.1 - Uses the filterdefaults.picker routine to automatically pick data, parameters</dt>
+<dd>for this are not yet optimized</dd>
+</dl>
+<p>07/11/14 - Calum Chamberlain - Victoria University of Wellington, NZ</p>
+</div>
+</div>
+<div class="section" id="pro">
+<h1>Pro<a class="headerlink" href="#pro" title="Permalink to this headline">¶</a></h1>
+<p>Codes to run main functions.</p>
+<div class="section" id="module-Sfile_util">
+<span id="sfile-util"></span><h2>Sfile_util<a class="headerlink" href="#module-Sfile_util" title="Permalink to this headline">¶</a></h2>
+<p>Part of the rt2detection module to read nordic format s-files and write them
+EQcorrscan is a python module designed to run match filter routines for
+seismology, within it are routines for integration to seisan and obspy.
+With obspy integration (which is necessary) all main waveform formats can be
+read in and output.</p>
+<p>Code generated by Calum John Chamberlain of Victoria University of Wellington,
+2015.</p>
+<p>All rights reserved.</p>
+<dl class="class">
+<dt id="Sfile_util.PICK">
+<em class="property">class </em><code class="descclassname">Sfile_util.</code><code class="descname">PICK</code><span class="sig-paren">(</span><em>station</em>, <em>channel</em>, <em>impulsivity</em>, <em>phase</em>, <em>weight</em>, <em>polarity</em>, <em>time</em>, <em>coda</em>, <em>amplitude</em>, <em>peri</em>, <em>azimuth</em>, <em>velocity</em>, <em>AIN</em>, <em>SNR</em>, <em>azimuthres</em>, <em>timeres</em>, <em>finalweight</em>, <em>distance</em>, <em>CAZ</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sfile_util.html#PICK"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sfile_util.PICK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pick information for seisan implimentation</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Sfile_util.readpicks">
+<code class="descclassname">Sfile_util.</code><code class="descname">readpicks</code><span class="sig-paren">(</span><em>sfilename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sfile_util.html#readpicks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sfile_util.readpicks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to read pick informaiton from the s-file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Sfile_tile.PICK</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Sfile_util.readwavename">
+<code class="descclassname">Sfile_util.</code><code class="descname">readwavename</code><span class="sig-paren">(</span><em>sfilename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sfile_util.html#readwavename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sfile_util.readwavename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to extract the waveform filename from the s-file,
+returns a list of waveform names found in the s-file as multiples can
+be present.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Sfile_util.blanksfile">
+<code class="descclassname">Sfile_util.</code><code class="descname">blanksfile</code><span class="sig-paren">(</span><em>wavefile</em>, <em>evtype</em>, <em>userID</em>, <em>outdir</em>, <em>overwrite</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sfile_util.html#blanksfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sfile_util.blanksfile" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Module to generate an empty s-file with a populated header for a given
+waveform.</div></blockquote>
+<blockquote>
+<div># Arguments are the path of a wavefile (multiplexed miniseed file required)
+# Event type (L,R,D) and user ID (four characters as used in seisan)</div></blockquote>
+<blockquote>
+<div># Example s-file format:
+# 2014  719  617 50.2 R                                                         1
+# ACTION:ARG 14-11-11 10:53 OP:CALU STATUS:               ID:20140719061750     I
+# 2014/07/2014-07-19-0617-50.SAMBA_030_00                                       6
+# STAT SP IPHASW D HRMM SECON CODA AMPLIT PERI AZIMU VELO AIN AR TRES W  DIS CAZ7</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="Sfile_util.populateSfile">
+<code class="descclassname">Sfile_util.</code><code class="descname">populateSfile</code><span class="sig-paren">(</span><em>sfilename</em>, <em>picks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Sfile_util.html#populateSfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Sfile_util.populateSfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Module to populate a blank nordic format S-file with pick information,
+arguments required are the filename of the blank s-file and the picks
+where picks is a dictionary of picks including station, channel,
+impulsivity, phase, weight, polarity, time, coda, amplitude, peri, azimuth,
+velocity, SNR, azimuth residual, Time-residual, final weight,
+epicentral distance &amp; azimuth from event to station.</p>
+<p>This is a full pick line information from the seisan manual, P. 341</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-py_picker">
+<span id="py-picker"></span><h2>py_picker<a class="headerlink" href="#module-py_picker" title="Permalink to this headline">¶</a></h2>
+<p>Python automated seismic picker implimentations for the rt2detection package.</p>
+<dl class="function">
+<dt id="py_picker.picker_plot">
+<code class="descclassname">py_picker.</code><code class="descname">picker_plot</code><span class="sig-paren">(</span><em>stream</em>, <em>picks</em>, <em>types</em>, <em>show=True</em>, <em>savefile=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_picker.html#picker_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_picker.picker_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plotting fucntion for the picker routine - this will pot the waveforms and
+the picks to allow for pick veriication.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="py_picker.seism_picker">
+<code class="descclassname">py_picker.</code><code class="descname">seism_picker</code><span class="sig-paren">(</span><em>picktype</em>, <em>args</em>, <em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/py_picker.html#seism_picker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#py_picker.seism_picker" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple cover function for th eobspy picking modules</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>picktype</strong> (<em>String</em>) &#8211; Eother Baer or AR for Auto-regressive</li>
+<li><strong>args</strong> (<em>Class</em>) &#8211; List of appropriate arguments for the chosen pick type -
+defined in picker_par.py</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">p_pick, s_pick</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-STALTA">
+<span id="stalta"></span><h2>STALTA<a class="headerlink" href="#module-STALTA" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-mag_conv">
+<span id="mag-conv"></span><h2>mag_conv<a class="headerlink" href="#module-mag_conv" title="Permalink to this headline">¶</a></h2>
+<p>Codes to extract amplitude information from s-file and cnvert these to a
+previously dervied local magnitude scale.  Originally written to generate
+magnitudes for the DFDP Alpine Fault drilling project in New Zealand by
+Calum Chamberlain (VUW) using the magnitude constasts derived by Boese et al.
+(2012).</p>
+<dl class="function">
+<dt id="mag_conv.event_magnitude">
+<code class="descclassname">mag_conv.</code><code class="descname">event_magnitude</code><span class="sig-paren">(</span><em>sfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mag_conv.html#event_magnitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mag_conv.event_magnitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to generate the magnitude of a single event from a seisan s-file
+with amplitude picks in it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sfile</strong> (<em>String</em>) &#8211; Nordic type s-file name, with full path</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Local magnitude, standard deviation of magnitude</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mag_conv.mag_conv">
+<code class="descclassname">mag_conv.</code><code class="descname">mag_conv</code><span class="sig-paren">(</span><em>deltaamp</em>, <em>distance</em>, <em>sta_cor</em>, <em>f_dependent=False</em>, <em>period=999.9</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mag_conv.html#mag_conv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mag_conv.mag_conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to convert from peak-to-trough amplitude to magnitude for a single
+seismic station at a certain hypocentral distance (distance) and with a set
+station correction term.  Will look for parameters for conversion in a file
+mag_conv_par,py in the ../par directory (relative to this code).</p>
+<dl class="docutils">
+<dt>Certain assumptions are implicit in this calculation:</dt>
+<dd><ul class="first last simple">
+<li>peak-to-peak amplitude represents the maximum peak-to-trough
+amplitude of a body wave phase on a Wood-Anderson converted
+seismogram and is measured in nm.  This will be halved to give an
+approximate peak amplitude as specified in the definition of the
+Wood Anderson local magnitude scale.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>deltaamp</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; peak-to-peak amplitude in nm</li>
+<li><strong>distance</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; hypocentral distance in km</li>
+<li><strong>sta_corr</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Station correction term in magnitude units.</li>
+<li><strong>f_dependent</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; option, defaults to False</li>
+<li><strong>period</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; optional, required if f_dependent=True</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Magnitude, float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mag_conv.recalc_database">
+<code class="descclassname">mag_conv.</code><code class="descname">recalc_database</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mag_conv.html#recalc_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mag_conv.recalc_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overarching code to recalculate and plot all the magnitudes for a given
+database in seisan.  Must be a databse of S-files in a SEISAN REA structure</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>String</em>) &#8211; Path to the top of the rea tree (above the year directories)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Magnitudes</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="par">
+<h1>Par<a class="headerlink" href="#par" title="Permalink to this headline">¶</a></h1>
+<p>User-editable codes to input parameters for <em>core</em> files.
+Scripts are coded in the files with a full description of the parameters</p>
+<div class="section" id="module-overallpars">
+<span id="overallpars"></span><h2>overallpars<a class="headerlink" href="#module-overallpars" title="Permalink to this headline">¶</a></h2>
+<p># A python style declaration of variables used in rt2detection.py</p>
+<dl class="class">
+<dt id="overallpars.STATION">
+<em class="property">class </em><code class="descclassname">overallpars.</code><code class="descname">STATION</code><span class="sig-paren">(</span><em>name</em>, <em>netcode</em>, <em>loccode</em>, <em>das</em>, <em>ch1</em>, <em>ch2</em>, <em>ch3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/overallpars.html#STATION"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#overallpars.STATION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Station information for seismic station</p>
+<dl class="attribute">
+<dt id="overallpars.STATION.stacount">
+<code class="descname">stacount</code><em class="property"> = 0</em><a class="headerlink" href="#overallpars.STATION.stacount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-picker_par">
+<span id="picker-par"></span><h2>picker_par<a class="headerlink" href="#module-picker_par" title="Permalink to this headline">¶</a></h2>
+<p>Python imput arguments for the python auto-pickers</p>
+<dl class="class">
+<dt id="picker_par.AR_ARGS">
+<em class="property">class </em><code class="descclassname">picker_par.</code><code class="descname">AR_ARGS</code><span class="sig-paren">(</span><em>f1</em>, <em>f2</em>, <em>lta_p</em>, <em>sta_p</em>, <em>lta_s</em>, <em>sta_s</em>, <em>m_p</em>, <em>m_s</em>, <em>l_p</em>, <em>l_s</em>, <em>s_pick</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/picker_par.html#AR_ARGS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#picker_par.AR_ARGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input arguments for the AR picker</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="picker_par.BAER_ARGS">
+<em class="property">class </em><code class="descclassname">picker_par.</code><code class="descname">BAER_ARGS</code><span class="sig-paren">(</span><em>tdownmax</em>, <em>tupevent</em>, <em>thr1</em>, <em>thr2</em>, <em>preset_len</em>, <em>p_dur</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/picker_par.html#BAER_ARGS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#picker_par.BAER_ARGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input arguments for the Baer picker</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trigger_par">
+<span id="trigger-par"></span><h2>trigger_par<a class="headerlink" href="#module-trigger_par" title="Permalink to this headline">¶</a></h2>
+<p>Declaration of variables to be used as defaults in the STALTA.py
+routine.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="intro.html" class="btn btn-neutral" title="Manual for rt2detection package."><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Calum John Chamberlain.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
