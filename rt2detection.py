@@ -90,6 +90,7 @@ def plot_data_cont(stations, outfile, form):
 if __name__ == '__main__':
     ## GET DEFAULT PARAMETERS
     from par import overallpars as defaults
+    import numpy as np
     if defaults.debug==1:
         print "Looking for data in: "+defaults.indir
         print "Will put miniseed data in: "+defaults.outdir
@@ -158,82 +159,82 @@ if __name__ == '__main__':
     # pascal tools defaults.neo tool in station directories - it then uses the pascal tool
     # rt2ms to convert from these archived data to miniseed files in the length
     # that they were recorded in.
-    if defaults.rawconv and defaults.neo=='True':
-        for sta in defaults.stalist:
-            print('Running rt2ms for station: '+sta.name)
-            call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
-                    "-d",defaults.indir+"/"+sta.name,"--daskeep",sta.das,"-o",\
-                    defaults.outdir+'/'+sta.name,"-Y"])
-    if defaults.rawconv and defaults.neo=='False':
-        for sta in defaults.stalist:
-            print('Generating lists of the files to be converted for station '+\
-                  sta.name)
-            if not defaults.alltime:
-                filelist=[]
-                daslist=[]
-                for date in rundates:
-                    datestr=str(date.year)+str(date.julday).zfill(3)
-                    filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr))
-                    daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr+'/*'))
-                filelist.sort()
-                daslist.sort()
-            else:
-                filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
-                daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
-            if len(filelist) != 0:
-                rtflist = open('rtflist.lis','w')
-                for rtfile in filelist:
-                    rtflist.write(rtfile+'\n')
-                rtflist.close()
-                dasfilelist = open(sta.name+'_daslist.csv','w')
-                for das in daslist:
-                    dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
-                                        das.split('/')[len(das.split('/'))-1]+'\n')
-                dasfilelist.close()
-                call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
-                        "-F","rtflist.lis","--daskeep",sta.das,"-o",\
-                        defaults.outdir+'/'+sta.name,"-Y","-L"])
-            else:
-                print('Found no data for station: '+sta.name)
-
-    if defaults.rawconv and defaults.neo=='Sometimes':
-        # Special case to look for both files
-        for sta in defaults.stalist:
-            print('Running rt2ms on neo input files first for station: '+sta.name)
+    # if defaults.rawconv and defaults.neo=='True':
+        # for sta in defaults.stalist:
+            # print('Running rt2ms for station: '+sta.name)
             # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
                     # "-d",defaults.indir+"/"+sta.name,"--daskeep",sta.das,"-o",\
                     # defaults.outdir+'/'+sta.name,"-Y"])
-            print('Generating list of files to be run through rt2ms for station: '+\
-                  sta.name)
-            if not defaults.alltime:
-                filelist=[]
-                daslist=[]
-                for date in rundates:
-                    filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date))
-                    daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date+'/*'))
-                filelist.sort()
-                daslist.sort()
-            else:
-                filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
-                daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
-            if len(filelist) != 0:
-                rtflist = open('rtflist.lis','w')
-                for rtfile in filelist:
-                    if not rtfile[len(rtfile)-4:len(rtfile)] == '.ZIP':
-                        rtflist.write(rtfile+'\n')
-                    else:
-                        daslist+=rtfile
-                rtflist.close()
-                dasfilelist = open(sta.name+'_daslist.csv','w')
-                for das in daslist:
-                    dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
-                                        das.split('/')[len(das.split('/'))-1]+'\n')
-                dasfilelist.close()
+    # if defaults.rawconv and defaults.neo=='False':
+        # for sta in defaults.stalist:
+            # print('Generating lists of the files to be converted for station '+\
+                  # sta.name)
+            # if not defaults.alltime:
+                # filelist=[]
+                # daslist=[]
+                # for date in rundates:
+                    # datestr=str(date.year)+str(date.julday).zfill(3)
+                    # filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr))
+                    # daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr+'/*'))
+                # filelist.sort()
+                # daslist.sort()
+            # else:
+                # filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
+                # daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
+            # if len(filelist) != 0:
+                # rtflist = open('rtflist.lis','w')
+                # for rtfile in filelist:
+                    # rtflist.write(rtfile+'\n')
+                # rtflist.close()
+                # dasfilelist = open(sta.name+'_daslist.csv','w')
+                # for das in daslist:
+                    # dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
+                                        # das.split('/')[len(das.split('/'))-1]+'\n')
+                # dasfilelist.close()
                 # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
                         # "-F","rtflist.lis","--daskeep",sta.das,"-o",\
                         # defaults.outdir+'/'+sta.name,"-Y","-L"])
-            else:
-                print('Found no data for station: '+sta.name)
+            # else:
+                # print('Found no data for station: '+sta.name)
+
+    # if defaults.rawconv and defaults.neo=='Sometimes':
+        # # Special case to look for both files
+        # for sta in defaults.stalist:
+            # print('Running rt2ms on neo input files first for station: '+sta.name)
+            # # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
+                    # # "-d",defaults.indir+"/"+sta.name,"--daskeep",sta.das,"-o",\
+                    # # defaults.outdir+'/'+sta.name,"-Y"])
+            # print('Generating list of files to be run through rt2ms for station: '+\
+                  # sta.name)
+            # if not defaults.alltime:
+                # filelist=[]
+                # daslist=[]
+                # for date in rundates:
+                    # filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date))
+                    # daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date+'/*'))
+                # filelist.sort()
+                # daslist.sort()
+            # else:
+                # filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
+                # daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
+            # if len(filelist) != 0:
+                # rtflist = open('rtflist.lis','w')
+                # for rtfile in filelist:
+                    # if not rtfile[len(rtfile)-4:len(rtfile)] == '.ZIP':
+                        # rtflist.write(rtfile+'\n')
+                    # else:
+                        # daslist+=rtfile
+                # rtflist.close()
+                # dasfilelist = open(sta.name+'_daslist.csv','w')
+                # for das in daslist:
+                    # dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
+                                        # das.split('/')[len(das.split('/'))-1]+'\n')
+                # dasfilelist.close()
+                # # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
+                        # # "-F","rtflist.lis","--daskeep",sta.das,"-o",\
+                        # # defaults.outdir+'/'+sta.name,"-Y","-L"])
+            # else:
+                # print('Found no data for station: '+sta.name)
 
     ############################ Plot data continuity #############################
     if defaults.rawconv or defaults.archive:
@@ -258,7 +259,7 @@ if __name__ == '__main__':
                 daylist=[]
                 for date in rundates:
                     daylist+=glob.glob(defaults.outdir+'/*/Y'+str(date.year)+\
-                                       '/R'+str(date.julday).zfill(3))+'.01'
+                                       '/R'+str(date.julday).zfill(3)+'.01')
             else:
                 daylist=[]
                 for date in rundates:
@@ -290,7 +291,7 @@ if __name__ == '__main__':
             if daycount < len(daylist)-1:
                 nextdaypath=daylist[daycount+1]
             print '\n'+daydir
-            if defaults.rawconv=='True':
+            if defaults.rawconv:
                 st=obsread(defaults.outdir+'/*/'+yeardir+'/'+daydir+'/*.m')
             else:
                 st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
@@ -490,6 +491,8 @@ if __name__ == '__main__':
                     # print daystart
                     # print daystart+86400
                     tr=tr.trim(daystart,daystart+86400)
+                    if tr.data.dtype.type == np.float64:
+                        tr.data=tr.data.astype(np.int32)
                     Ypath=defaults.arcdir+'/'+yeardir
                     Dpath=Ypath+'/'+daydir
                     if not os.path.isdir(Ypath):
