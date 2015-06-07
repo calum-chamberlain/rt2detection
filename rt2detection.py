@@ -278,6 +278,7 @@ if __name__ == '__main__':
             datelist+=[daypath.split('/')[len(daypath.split('/'))-2]+'/'+\
                         daypath.split('/')[len(daypath.split('/'))-1]]
         daylist=sorted(list(set(datelist))) # Get unique values
+        del datelist
         if len(daylist) > 1:
             print 'You have collected data over multiple days - slacker'
             print 'Will run over: '+str(len(daylist))+' unique days'
@@ -297,9 +298,9 @@ if __name__ == '__main__':
                 st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
             print 'Merging data'
             try:
-                for tr in st:
-                    tr = tr.detrend('simple')
-                st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                # for tr in st:
+                    # tr = tr.detrend('simple')
+                st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -316,9 +317,9 @@ if __name__ == '__main__':
                         else:
                             st_dummy=Stream(tr)
                 st=st_dummy
-                for tr in st:
-                    tr = tr.detrend('simple')
-                st.merge(fill_value=0)
+                # for tr in st:
+                    # tr = tr.detrend('simple')
+                st.merge(fill_value='interpolate')
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
                 print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
@@ -365,9 +366,9 @@ if __name__ == '__main__':
                     st+=obsread(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
 
                 try:
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -384,9 +385,9 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0)
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate')
 
 
 
@@ -412,10 +413,10 @@ if __name__ == '__main__':
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
                     st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 try:
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0) # merge data filling gaps
-                    #st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate') # merge data filling gaps
+                    #st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -432,9 +433,9 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0)
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate')
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
