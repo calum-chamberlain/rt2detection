@@ -158,82 +158,82 @@ if __name__ == '__main__':
     # pascal tools defaults.neo tool in station directories - it then uses the pascal tool
     # rt2ms to convert from these archived data to miniseed files in the length
     # that they were recorded in.
-    if defaults.rawconv and defaults.neo=='True':
-        for sta in defaults.stalist:
-            print('Running rt2ms for station: '+sta.name)
-            call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
-                    "-d",defaults.indir+"/"+sta.name,"--daskeep",sta.das,"-o",\
-                    defaults.outdir+'/'+sta.name,"-Y"])
-    if defaults.rawconv and defaults.neo=='False':
-        for sta in defaults.stalist:
-            print('Generating lists of the files to be converted for station '+\
-                  sta.name)
-            if not defaults.alltime:
-                filelist=[]
-                daslist=[]
-                for date in rundates:
-                    datestr=str(date.year)+str(date.julday).zfill(3)
-                    filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr))
-                    daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr+'/*'))
-                filelist.sort()
-                daslist.sort()
-            else:
-                filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
-                daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
-            if len(filelist) != 0:
-                rtflist = open('rtflist.lis','w')
-                for rtfile in filelist:
-                    rtflist.write(rtfile+'\n')
-                rtflist.close()
-                dasfilelist = open(sta.name+'_daslist.csv','w')
-                for das in daslist:
-                    dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
-                                        das.split('/')[len(das.split('/'))-1]+'\n')
-                dasfilelist.close()
-                call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
-                        "-F","rtflist.lis","--daskeep",sta.das,"-o",\
-                        defaults.outdir+'/'+sta.name,"-Y","-L"])
-            else:
-                print('Found no data for station: '+sta.name)
-
-    if defaults.rawconv and defaults.neo=='Sometimes':
-        # Special case to look for both files
-        for sta in defaults.stalist:
-            print('Running rt2ms on neo input files first for station: '+sta.name)
+    # if defaults.rawconv and defaults.neo=='True':
+        # for sta in defaults.stalist:
+            # print('Running rt2ms for station: '+sta.name)
             # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
                     # "-d",defaults.indir+"/"+sta.name,"--daskeep",sta.das,"-o",\
                     # defaults.outdir+'/'+sta.name,"-Y"])
-            print('Generating list of files to be run through rt2ms for station: '+\
-                  sta.name)
-            if not defaults.alltime:
-                filelist=[]
-                daslist=[]
-                for date in rundates:
-                    filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date))
-                    daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date+'/*'))
-                filelist.sort()
-                daslist.sort()
-            else:
-                filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
-                daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
-            if len(filelist) != 0:
-                rtflist = open('rtflist.lis','w')
-                for rtfile in filelist:
-                    if not rtfile[len(rtfile)-4:len(rtfile)] == '.ZIP':
-                        rtflist.write(rtfile+'\n')
-                    else:
-                        daslist+=rtfile
-                rtflist.close()
-                dasfilelist = open(sta.name+'_daslist.csv','w')
-                for das in daslist:
-                    dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
-                                        das.split('/')[len(das.split('/'))-1]+'\n')
-                dasfilelist.close()
+    # if defaults.rawconv and defaults.neo=='False':
+        # for sta in defaults.stalist:
+            # print('Generating lists of the files to be converted for station '+\
+                  # sta.name)
+            # if not defaults.alltime:
+                # filelist=[]
+                # daslist=[]
+                # for date in rundates:
+                    # datestr=str(date.year)+str(date.julday).zfill(3)
+                    # filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr))
+                    # daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+datestr+'/*'))
+                # filelist.sort()
+                # daslist.sort()
+            # else:
+                # filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
+                # daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
+            # if len(filelist) != 0:
+                # rtflist = open('rtflist.lis','w')
+                # for rtfile in filelist:
+                    # rtflist.write(rtfile+'\n')
+                # rtflist.close()
+                # dasfilelist = open(sta.name+'_daslist.csv','w')
+                # for das in daslist:
+                    # dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
+                                        # das.split('/')[len(das.split('/'))-1]+'\n')
+                # dasfilelist.close()
                 # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
                         # "-F","rtflist.lis","--daskeep",sta.das,"-o",\
                         # defaults.outdir+'/'+sta.name,"-Y","-L"])
-            else:
-                print('Found no data for station: '+sta.name)
+            # else:
+                # print('Found no data for station: '+sta.name)
+
+    # if defaults.rawconv and defaults.neo=='Sometimes':
+        # # Special case to look for both files
+        # for sta in defaults.stalist:
+            # print('Running rt2ms on neo input files first for station: '+sta.name)
+            # # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
+                    # # "-d",defaults.indir+"/"+sta.name,"--daskeep",sta.das,"-o",\
+                    # # defaults.outdir+'/'+sta.name,"-Y"])
+            # print('Generating list of files to be run through rt2ms for station: '+\
+                  # sta.name)
+            # if not defaults.alltime:
+                # filelist=[]
+                # daslist=[]
+                # for date in rundates:
+                    # filelist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date))
+                    # daslist+=(glob.glob(defaults.indir+'/'+sta.name+'/'+date+'/*'))
+                # filelist.sort()
+                # daslist.sort()
+            # else:
+                # filelist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*'))
+                # daslist=sorted(glob.glob(defaults.indir+'/'+sta.name+'/*/*'))
+            # if len(filelist) != 0:
+                # rtflist = open('rtflist.lis','w')
+                # for rtfile in filelist:
+                    # if not rtfile[len(rtfile)-4:len(rtfile)] == '.ZIP':
+                        # rtflist.write(rtfile+'\n')
+                    # else:
+                        # daslist+=rtfile
+                # rtflist.close()
+                # dasfilelist = open(sta.name+'_daslist.csv','w')
+                # for das in daslist:
+                    # dasfilelist.write(das.split('/')[len(das.split('/'))-2]+','+\
+                                        # das.split('/')[len(das.split('/'))-1]+'\n')
+                # dasfilelist.close()
+                # # call(["rt2ms","-n",sta.netcode,"-s",sta.name,"-l",sta.loccode,\
+                        # # "-F","rtflist.lis","--daskeep",sta.das,"-o",\
+                        # # defaults.outdir+'/'+sta.name,"-Y","-L"])
+            # else:
+                # print('Found no data for station: '+sta.name)
 
     ############################ Plot data continuity #############################
     if defaults.rawconv or defaults.archive:
@@ -258,7 +258,7 @@ if __name__ == '__main__':
                 daylist=[]
                 for date in rundates:
                     daylist+=glob.glob(defaults.outdir+'/*/Y'+str(date.year)+\
-                                       '/R'+str(date.julday).zfill(3))+'.01'
+                                       '/R'+str(date.julday).zfill(3)+'.01')
             else:
                 daylist=[]
                 for date in rundates:
@@ -287,18 +287,19 @@ if __name__ == '__main__':
         for daypath in daylist:
             yeardir=daypath.split('/')[len(daypath.split('/'))-2]   # Will be of the form Y2014
             daydir=daypath.split('/')[len(daypath.split('/'))-1]    # Will be of the form R201.01
+            day=UTCDateTime(yeardir[1:5]+daydir[1:4])
             if daycount < len(daylist)-1:
                 nextdaypath=daylist[daycount+1]
             print '\n'+daydir
-            if defaults.rawconv=='True':
+            if defaults.rawconv==True:
                 st=obsread(defaults.outdir+'/*/'+yeardir+'/'+daydir+'/*.m')
             else:
                 st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
             print 'Merging data'
             try:
-                for tr in st:
-                    tr = tr.detrend('simple')
-                st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                # for tr in st:
+                    # tr = tr.detrend('simple')
+                st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -315,9 +316,9 @@ if __name__ == '__main__':
                         else:
                             st_dummy=Stream(tr)
                 st=st_dummy
-                for tr in st:
-                    tr = tr.detrend('simple')
-                st.merge(fill_value=0)
+                # for tr in st:
+                    # tr = tr.detrend('simple')
+                st.merge(fill_value='interpolate')
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
                 print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
@@ -364,9 +365,9 @@ if __name__ == '__main__':
                     st+=obsread(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
 
                 try:
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -383,9 +384,9 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0)
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate')
 
 
 
@@ -411,10 +412,10 @@ if __name__ == '__main__':
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
                     st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 try:
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0) # merge data filling gaps
-                    #st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate') # merge data filling gaps
+                    #st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -431,9 +432,9 @@ if __name__ == '__main__':
                             else:
                                 st_dummy=Stream(tr)
                     st=st_dummy
-                    for tr in st:
-                        tr = tr.detrend('simple')
-                    st.merge(fill_value=0)
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
+                    st.merge(fill_value='interpolate')
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
@@ -444,27 +445,6 @@ if __name__ == '__main__':
                             str(st[0].stats.starttime.minute)+':'+\
                             str(st[0].stats.starttime.second)
 
-##########################Download GeoNet data for day if required############
-            if defaults.getGeoNet:
-                print 'Downloading GeoNet data for the day'
-                oldlen = len(st)
-                import subprocess
-                pad=''
-                for station in defaults.geostalist:
-                    if len(station.name) == 3:
-                        pad = '..'
-                    elif len(station.name) == 4:
-                        pad = '.'
-                    for channel in station.channels:
-                        subprocess.call(['java','-jar','pro/GeoNetCWBQuery-4.2.0-bin.jar',
-                            '-d','1d','-t','ms','-b',day.year+day.julday+' 00:00:00',
-                            '-s','NZ'+station.name+pad+channel,
-                            '-o',daypath+'/%z%y%M%D.%s.%c.ms'])
-                        st+=read(daypath+'/*.'+station.name+'.'+channel+'.ms')
-                print 'I have downloaded and read in an extra '+\
-                        str(len(st)-oldlen)+' traces'
-
-            prevdaypath=daypath
             # Change the channel names from those output by rt2ms (101,102,103) to the
             # true channel names taken from the station definitions above
             if defaults.rename:
@@ -480,7 +460,32 @@ if __name__ == '__main__':
                     if tr.stats.channel == '102':
                         tr.stats.channel=defaults.stalist[staid].channels[1]
                     if tr.stats.channel == '103':
-                        tr.stats.channel=defaults.stalist[staid].channels[3]
+                        tr.stats.channel=defaults.stalist[staid].channels[2]
+##########################Download GeoNet data for day if required############
+            if defaults.getGeoNet:
+                print 'Downloading GeoNet data for the day'
+                oldlen = len(st)
+                import subprocess
+                pad=''
+                for station in defaults.geostalist:
+                    if len(station.name) == 3:
+                        pad = '..'
+                    elif len(station.name) == 4:
+                        pad = '.'
+                    for channel in station.channels:
+                        subprocess.call(['java','-jar','pro/GeoNetCWBQuery-4.2.0-bin.jar',
+                            '-d','1d','-t','ms','-b',str(day.year)+','+\
+                                         str(day.julday).zfill(3)+'-00:00:00',
+                            '-s','NZ'+station.name+pad+channel,
+                            '-o',daypath+'/%z%y%M%D.%s.%c.ms'])
+                        try:
+                            st+=obsread(daypath+'/*.'+station.name+'.'+channel+'.ms')
+                        except:
+                            print 'Data have not been downloaded'
+                print 'I have downloaded and read in an extra '+\
+                        str(len(st)-oldlen)+' traces'
+
+            prevdaypath=daypath
 
 
             # Archive data here
@@ -500,7 +505,10 @@ if __name__ == '__main__':
                             tr.stats.channel+'.'+str(tr.stats.starttime.year)+'.'+\
                             str(tr.stats.starttime.julday).zfill(3)
                     if len(tr.data) > 0:
-                        tr.write(outpath,format="MSEED", encoding=defaults.dformat)
+                        try:
+                            tr.write(outpath,format="MSEED", encoding=defaults.dformat)
+                        except:
+                            raise IOError("Issue writing "+tr.stats.station)
                     sys.stdout.write('Archived file written as: '+outpath+'\r')
                     sys.stdout.flush()
             print '\n'
