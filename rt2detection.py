@@ -291,10 +291,23 @@ if __name__ == '__main__':
             if daycount < len(daylist)-1:
                 nextdaypath=daylist[daycount+1]
             print '\n'+daydir
+            if 'st' in locals():
+                del st
             if defaults.rawconv==True:
-                st=obsread(defaults.outdir+'/*/'+yeardir+'/'+daydir+'/*.m')
+                rawfiles=glob.glob(defaults.outdir+'/*/'+yeardir+'/'+daydir+'/*.m')
             else:
-                st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
+                rawfiles=glob.glob(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
+            for rawfile in rawfiles:
+                if not 'st' in locals():
+                    try:
+                        st=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
+                else:
+                    try:
+                        st+=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
             print 'Merging data'
             try:
                 # for tr in st:
@@ -303,18 +316,23 @@ if __name__ == '__main__':
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
-                samp_rate=st[0].stats.sampling_rate
-                if 'st_dummy' in locals():
-                    del st_dummy
+                true_sta=[]
                 for tr in st:
-                    if not tr.stats.sampling_rate==samp_rate:
-                        print 'station: '+tr.stats.station+' samp-rate: '+\
-                                str(tr.stats.sampling_rate)
-                    else:
-                        if 'st_dummy' in locals():
-                            st_dummy+=tr
+                    true_sta+=[tr.stats.station]
+                true_sta=list(set(true_sta))
+                for sta in true_sta:
+                    samp_rate=st.select(station=sta)[0].stats.sampling_rate
+                    if 'st_dummy' in locals():
+                        del st_dummy
+                    for tr in st.select(station=sta):
+                        if not tr.stats.sampling_rate==samp_rate:
+                            print 'station: '+tr.stats.station+' samp-rate: '+\
+                                    str(tr.stats.sampling_rate)
                         else:
-                            st_dummy=Stream(tr)
+                            if 'st_dummy' in locals():
+                                st_dummy+=tr
+                            else:
+                                st_dummy=Stream(tr)
                 st=st_dummy
                 # for tr in st:
                     # tr = tr.detrend('simple')
@@ -357,12 +375,17 @@ if __name__ == '__main__':
                     if defaults.debug==1:
                         print 'Trying to read previous data from: '+defaults.outdir+'/*/'+\
                                 prevyeardir+'/'+prevdaydir+'/*.*.23.*.m'
-                    st+=obsread(defaults.outdir+'/*/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/*/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
                 else:
                     if defaults.debug==1:
                         print 'Trying to read previous data from: '+defaults.outdir+'/'+\
                                 prevyeardir+'/'+prevdaydir+'/*.*.23.*.m'
-                    st+=obsread(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
+                for rawfile in rawfiles:
+                    try:
+                        st+=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
 
                 try:
                     # for tr in st:
@@ -405,12 +428,17 @@ if __name__ == '__main__':
                     if defaults.debug==1:
                         print 'Trying to read next data from: '+defaults.outdir+'/*/'+\
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
-                    st+=obsread(defaults.outdir+'/*/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/*/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 else:
                     if defaults.debug==1:
                         print 'Trying to read next data from: '+defaults.outdir+'/'+\
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
-                    st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
+                for rawfile in rawfiles:
+                    try:
+                        st+=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
                 try:
                     # for tr in st:
                         # tr = tr.detrend('simple')
