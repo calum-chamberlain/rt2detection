@@ -1,0 +1,628 @@
+#		<< IRIS SEED Reader, Release 4.6 >>
+#		
+#		======== CHANNEL RESPONSE DATA ========
+B050F03     Station:     MCNS
+B050F16     Network:     NZ
+B052F03     Location:    20
+B052F04     Channel:     HN1
+B052F22     Start date:  2008,131,00:00:00.0000
+B052F23     End date:    2015,062,01:00:00.0000
+#		=======================================
+#		+               +--------------------------------------------+                +
+#		+               |   Response (Poles & Zeros),  MCNS ch HN1   |                +
+#		+               +--------------------------------------------+                +
+#		
+B053F03     Transfer function type:                A [Laplace Transform (Rad/sec)]
+B053F04     Stage sequence number:                 1
+B053F05     Response in units lookup:              M/S**2 - Acceleration in Meters Per Second Per Second
+B053F06     Response out units lookup:             V - Volts
+B053F07     A0 normalization factor:               2.45957E+13
+B053F08     Normalization frequency:               1
+B053F09     Number of zeroes:                      0
+B053F14     Number of poles:                       4
+#		Complex zeroes:
+#		  i  real          imag          real_error    imag_error
+#		Complex poles:
+#		  i  real          imag          real_error    imag_error
+B053F15-18    0 -9.810000E+02  1.009000E+03  0.000000E+00  0.000000E+00
+B053F15-18    1 -9.810000E+02 -1.009000E+03  0.000000E+00  0.000000E+00
+B053F15-18    2 -3.290000E+03  1.263000E+03  0.000000E+00  0.000000E+00
+B053F15-18    3 -3.290000E+03 -1.263000E+03  0.000000E+00  0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 1
+B058F04     Gain:                                  1.273560E-01
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+               +-------------------------------------------+                 +
+#		+               |   Response (Coefficients),  MCNS ch HN1   |                 +
+#		+               +-------------------------------------------+                 +
+#		
+B054F03     Transfer function type:                D
+B054F04     Stage sequence number:                 2
+B054F05     Response in units lookup:              V - Volts
+B054F06     Response out units lookup:             COUNTS - Digital Counts
+B054F07     Number of numerators:                  0
+B054F10     Number of denominators:                0
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 2
+B057F04     Input sample rate:                     2.000000E+03
+B057F05     Decimation factor:                     1
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 2
+B058F04     Gain:                                  3.355440E+06
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                     +--------------------------------+                      +
+#		+                     |   FIR response,  MCNS ch HN1   |                      +
+#		+                     +--------------------------------+                      +
+#		
+B061F03     Stage sequence number:                 3
+B061F05     Symmetry type:                         B
+B061F06     Response in units lookup:              COUNTS - Digital Counts
+B061F07     Response out units lookup:             COUNTS - Digital Counts
+B061F08     Number of numerators:                  29
+#		Numerator coefficients:
+#		  i, coefficient
+B061F09       0  1.200000E-07
+B061F09       1 -6.000000E-07
+B061F09       2 -7.270000E-06
+B061F09       3 -3.207000E-05
+B061F09       4 -9.632000E-05
+B061F09       5 -2.249500E-04
+B061F09       6 -4.278400E-04
+B061F09       7 -6.698400E-04
+B061F09       8 -8.412600E-04
+B061F09       9 -7.497100E-04
+B061F09      10 -1.651000E-04
+B061F09      11  1.069900E-03
+B061F09      12  2.881170E-03
+B061F09      13  4.817010E-03
+B061F09      14  6.013990E-03
+B061F09      15  5.364060E-03
+B061F09      16  1.917240E-03
+B061F09      17 -4.556300E-03
+B061F09      18 -1.304090E-02
+B061F09      19 -2.104270E-02
+B061F09      20 -2.487850E-02
+B061F09      21 -2.055144E-02
+B061F09      22 -5.042910E-03
+B061F09      23  2.237165E-02
+B061F09      24  5.928445E-02
+B061F09      25  1.002046E-01
+B061F09      26  1.376329E-01
+B061F09      27  1.639258E-01
+B061F09      28  1.733912E-01
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 3
+B057F04     Input sample rate:                     2.000000E+03
+B057F05     Decimation factor:                     5
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 3
+B058F04     Gain:                                  1.000000E+00
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                     +--------------------------------+                      +
+#		+                     |   FIR response,  MCNS ch HN1   |                      +
+#		+                     +--------------------------------+                      +
+#		
+B061F03     Stage sequence number:                 4
+B061F05     Symmetry type:                         B
+B061F06     Response in units lookup:              COUNTS - Digital Counts
+B061F07     Response out units lookup:             COUNTS - Digital Counts
+B061F08     Number of numerators:                  69
+#		Numerator coefficients:
+#		  i, coefficient
+B061F09       0  6.000000E-07
+B061F09       1  1.550000E-06
+B061F09       2 -2.260000E-06
+B061F09       3 -1.681000E-05
+B061F09       4 -3.362000E-05
+B061F09       5 -2.730000E-05
+B061F09       6  1.156000E-05
+B061F09       7  4.172000E-05
+B061F09       8  9.780000E-06
+B061F09       9 -5.686000E-05
+B061F09      10 -5.186000E-05
+B061F09      11  5.221000E-05
+B061F09      12  1.089600E-04
+B061F09      13 -1.156000E-05
+B061F09      14 -1.646300E-04
+B061F09      15 -7.641000E-05
+B061F09      16  1.909700E-04
+B061F09      17  2.107600E-04
+B061F09      18 -1.530600E-04
+B061F09      19 -3.697900E-04
+B061F09      20  1.884000E-05
+B061F09      21  5.093800E-04
+B061F09      22  2.285200E-04
+B061F09      23 -5.654100E-04
+B061F09      24 -5.766200E-04
+B061F09      25  4.645600E-04
+B061F09      26  9.720300E-04
+B061F09      27 -1.441200E-04
+B061F09      28 -1.317980E-03
+B061F09      29 -4.243900E-04
+B061F09      30  1.482490E-03
+B061F09      31  1.211050E-03
+B061F09      32 -1.320600E-03
+B061F09      33 -2.109650E-03
+B061F09      34  7.084600E-04
+B061F09      35  2.934580E-03
+B061F09      36  4.142500E-04
+B061F09      37 -3.436330E-03
+B061F09      38 -2.004740E-03
+B061F09      39  3.338580E-03
+B061F09      40  3.887060E-03
+B061F09      41 -2.393840E-03
+B061F09      42 -5.743860E-03
+B061F09      43  4.507300E-04
+B061F09      44  7.136580E-03
+B061F09      45  2.480270E-03
+B061F09      46 -7.556320E-03
+B061F09      47 -6.175280E-03
+B061F09      48  6.500480E-03
+B061F09      49  1.017010E-02
+B061F09      50 -3.564480E-03
+B061F09      51 -1.376915E-02
+B061F09      52 -1.465920E-03
+B061F09      53  1.608443E-02
+B061F09      54  8.542540E-03
+B061F09      55 -1.609099E-02
+B061F09      56 -1.731730E-02
+B061F09      57  1.266038E-02
+B061F09      58  2.715230E-02
+B061F09      59 -4.484890E-03
+B061F09      60 -3.718054E-02
+B061F09      61 -1.035464E-02
+B061F09      62  4.641104E-02
+B061F09      63  3.613663E-02
+B061F09      64 -5.386257E-02
+B061F09      65 -8.853483E-02
+B061F09      66  5.870545E-02
+B061F09      67  3.122415E-01
+B061F09      68  4.395616E-01
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 4
+B057F04     Input sample rate:                     4.000000E+02
+B057F05     Decimation factor:                     2
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 4
+B058F04     Gain:                                  1.000000E+00
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |   Channel Sensitivity,  MCNS ch HN1   |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 0
+B058F04     Sensitivity:                           4.273360E+05
+B058F05     Frequency of sensitivity:              1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		<< IRIS SEED Reader, Release 4.6 >>
+#		
+#		======== CHANNEL RESPONSE DATA ========
+B050F03     Station:     MCNS
+B050F16     Network:     NZ
+B052F03     Location:    20
+B052F04     Channel:     HN1
+B052F22     Start date:  2015,062,02:26:00.0000
+B052F23     End date:    No Ending Time
+#		=======================================
+#		+               +--------------------------------------------+                +
+#		+               |   Response (Poles & Zeros),  MCNS ch HN1   |                +
+#		+               +--------------------------------------------+                +
+#		
+B053F03     Transfer function type:                A [Laplace Transform (Rad/sec)]
+B053F04     Stage sequence number:                 1
+B053F05     Response in units lookup:              M/S**2 - Acceleration in Meters Per Second Per Second
+B053F06     Response out units lookup:             V - Volts
+B053F07     A0 normalization factor:               2.45957E+13
+B053F08     Normalization frequency:               1
+B053F09     Number of zeroes:                      0
+B053F14     Number of poles:                       4
+#		Complex zeroes:
+#		  i  real          imag          real_error    imag_error
+#		Complex poles:
+#		  i  real          imag          real_error    imag_error
+B053F15-18    0 -9.810000E+02  1.009000E+03  0.000000E+00  0.000000E+00
+B053F15-18    1 -9.810000E+02 -1.009000E+03  0.000000E+00  0.000000E+00
+B053F15-18    2 -3.290000E+03  1.263000E+03  0.000000E+00  0.000000E+00
+B053F15-18    3 -3.290000E+03 -1.263000E+03  0.000000E+00  0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 1
+B058F04     Gain:                                  2.547120E-01
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+               +-------------------------------------------+                 +
+#		+               |   Response (Coefficients),  MCNS ch HN1   |                 +
+#		+               +-------------------------------------------+                 +
+#		
+B054F03     Transfer function type:                D
+B054F04     Stage sequence number:                 2
+B054F05     Response in units lookup:              V - Volts
+B054F06     Response out units lookup:             COUNTS - Digital Counts
+B054F07     Number of numerators:                  0
+B054F10     Number of denominators:                0
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 2
+B057F04     Input sample rate:                     3.000000E+04
+B057F05     Decimation factor:                     1
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 2
+B058F04     Gain:                                  1.677720E+06
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                     +--------------------------------+                      +
+#		+                     |   FIR response,  MCNS ch HN1   |                      +
+#		+                     +--------------------------------+                      +
+#		
+B061F03     Stage sequence number:                 3
+B061F05     Symmetry type:                         B
+B061F06     Response in units lookup:              COUNTS - Digital Counts
+B061F07     Response out units lookup:             COUNTS - Digital Counts
+B061F08     Number of numerators:                  30
+#		Numerator coefficients:
+#		  i, coefficient
+B061F09       0  8.482486E-06
+B061F09       1  3.890367E-05
+B061F09       2  1.093456E-04
+B061F09       3  2.269368E-04
+B061F09       4  3.658398E-04
+B061F09       5  4.479438E-04
+B061F09       6  3.462271E-04
+B061F09       7 -7.080892E-05
+B061F09       8 -8.515245E-04
+B061F09       9 -1.858011E-03
+B061F09      10 -2.705497E-03
+B061F09      11 -2.812724E-03
+B061F09      12 -1.603842E-03
+B061F09      13  1.166563E-03
+B061F09      14  5.081608E-03
+B061F09      15  8.903252E-03
+B061F09      16  1.075797E-02
+B061F09      17  8.733747E-03
+B061F09      18  1.773791E-03
+B061F09      19 -9.436835E-03
+B061F09      20 -2.199890E-02
+B061F09      21 -3.108832E-02
+B061F09      22 -3.111638E-02
+B061F09      23 -1.752226E-02
+B061F09      24  1.136141E-02
+B061F09      25  5.307333E-02
+B061F09      26  1.009941E-01
+B061F09      27  1.457141E-01
+B061F09      28  1.774811E-01
+B061F09      29  1.889748E-01
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 3
+B057F04     Input sample rate:                     3.000000E+04
+B057F05     Decimation factor:                     5
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 3
+B058F04     Gain:                                  1.000000E+00
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                     +--------------------------------+                      +
+#		+                     |   FIR response,  MCNS ch HN1   |                      +
+#		+                     +--------------------------------+                      +
+#		
+B061F03     Stage sequence number:                 4
+B061F05     Symmetry type:                         B
+B061F06     Response in units lookup:              COUNTS - Digital Counts
+B061F07     Response out units lookup:             COUNTS - Digital Counts
+B061F08     Number of numerators:                  18
+#		Numerator coefficients:
+#		  i, coefficient
+B061F09       0  4.134653E-05
+B061F09       1  2.349885E-04
+B061F09       2  5.912622E-04
+B061F09       3  6.531514E-04
+B061F09       4 -4.757065E-04
+B061F09       5 -2.951484E-03
+B061F09       6 -4.546653E-03
+B061F09       7 -1.238158E-03
+B061F09       8  8.109699E-03
+B061F09       9  1.641842E-02
+B061F09      10  1.052535E-02
+B061F09      11 -1.547469E-02
+B061F09      12 -4.536576E-02
+B061F09      13 -4.280857E-02
+B061F09      14  2.228518E-02
+B061F09      15  1.410596E-01
+B061F09      16  2.588350E-01
+B061F09      17  3.082140E-01
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 4
+B057F04     Input sample rate:                     6.000000E+03
+B057F05     Decimation factor:                     3
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 4
+B058F04     Gain:                                  1.000000E+00
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                     +--------------------------------+                      +
+#		+                     |   FIR response,  MCNS ch HN1   |                      +
+#		+                     +--------------------------------+                      +
+#		
+B061F03     Stage sequence number:                 5
+B061F05     Symmetry type:                         B
+B061F06     Response in units lookup:              COUNTS - Digital Counts
+B061F07     Response out units lookup:             COUNTS - Digital Counts
+B061F08     Number of numerators:                  43
+#		Numerator coefficients:
+#		  i, coefficient
+B061F09       0 -1.257285E-08
+B061F09       1 -1.052394E-07
+B061F09       2 -4.852191E-07
+B061F09       3 -1.627486E-06
+B061F09       4 -4.362781E-06
+B061F09       5 -9.754673E-06
+B061F09       6 -1.852494E-05
+B061F09       7 -2.983585E-05
+B061F09       8 -3.954349E-05
+B061F09       9 -3.857445E-05
+B061F09      10 -1.276005E-05
+B061F09      11  5.418668E-05
+B061F09      12  1.732865E-04
+B061F09      13  3.388901E-04
+B061F09      14  5.164607E-04
+B061F09      15  6.358121E-04
+B061F09      16  5.977587E-04
+B061F09      17  3.004982E-04
+B061F09      18 -3.141919E-04
+B061F09      19 -1.205070E-03
+B061F09      20 -2.187045E-03
+B061F09      21 -2.926119E-03
+B061F09      22 -2.997959E-03
+B061F09      23 -2.017401E-03
+B061F09      24  1.824549E-04
+B061F09      25  3.374997E-03
+B061F09      26  6.844246E-03
+B061F09      27  9.442340E-03
+B061F09      28  9.840647E-03
+B061F09      29  6.952269E-03
+B061F09      30  4.290701E-04
+B061F09      31 -8.923534E-03
+B061F09      32 -1.898762E-02
+B061F09      33 -2.655897E-02
+B061F09      34 -2.798474E-02
+B061F09      35 -2.010295E-02
+B061F09      36 -1.249299E-03
+B061F09      37  2.796922E-02
+B061F09      38  6.440833E-02
+B061F09      39  1.027805E-01
+B061F09      40  1.366737E-01
+B061F09      41  1.599653E-01
+B061F09      42  1.682611E-01
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 5
+B057F04     Input sample rate:                     2.000000E+03
+B057F05     Decimation factor:                     5
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 5
+B058F04     Gain:                                  1.000000E+00
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                     +--------------------------------+                      +
+#		+                     |   FIR response,  MCNS ch HN1   |                      +
+#		+                     +--------------------------------+                      +
+#		
+B061F03     Stage sequence number:                 6
+B061F05     Symmetry type:                         B
+B061F06     Response in units lookup:              COUNTS - Digital Counts
+B061F07     Response out units lookup:             COUNTS - Digital Counts
+B061F08     Number of numerators:                  87
+#		Numerator coefficients:
+#		  i, coefficient
+B061F09       0  2.887100E-08
+B061F09       1  2.053566E-07
+B061F09       2  6.207265E-07
+B061F09       3  7.185154E-07
+B061F09       4 -1.384411E-06
+B061F09       5 -7.797498E-06
+B061F09       6 -1.698965E-05
+B061F09       7 -2.110470E-05
+B061F09       8 -1.161732E-05
+B061F09       9  7.803086E-06
+B061F09      10  1.773192E-05
+B061F09      11  2.987683E-06
+B061F09      12 -2.143672E-05
+B061F09      13 -1.971703E-05
+B061F09      14  1.552468E-05
+B061F09      15  3.819913E-05
+B061F09      16  4.422385E-06
+B061F09      17 -5.017454E-05
+B061F09      18 -3.896607E-05
+B061F09      19  4.422385E-05
+B061F09      20  8.129002E-05
+B061F09      21 -1.015374E-05
+B061F09      22 -1.164442E-04
+B061F09      23 -5.576760E-05
+B061F09      24  1.233900E-04
+B061F09      25  1.456919E-04
+B061F09      26 -8.049887E-05
+B061F09      27 -2.372982E-04
+B061F09      28 -2.621859E-05
+B061F09      29  2.950141E-04
+B061F09      30  1.939284E-04
+B061F09      31 -2.767341E-04
+B061F09      32 -3.958549E-04
+B061F09      33  1.456961E-04
+B061F09      34  5.793315E-04
+B061F09      35  1.142677E-04
+B061F09      36 -6.719055E-04
+B061F09      37 -4.841401E-04
+B061F09      38  5.963393E-04
+B061F09      39  9.005633E-04
+B061F09      40 -2.930509E-04
+B061F09      41 -1.256946E-03
+B061F09      42 -2.541980E-04
+B061F09      43  1.418222E-03
+B061F09      44  9.961645E-04
+B061F09      45 -1.249297E-03
+B061F09      46 -1.807000E-03
+B061F09      47  6.535770E-04
+B061F09      48  2.490855E-03
+B061F09      49  3.859778E-04
+B061F09      50 -2.809962E-03
+B061F09      51 -1.773773E-03
+B061F09      52  2.532966E-03
+B061F09      53  3.287418E-03
+B061F09      54 -1.496765E-03
+B061F09      55 -4.591332E-03
+B061F09      56 -3.298721E-04
+B061F09      57  5.282256E-03
+B061F09      58  2.795956E-03
+B061F09      59 -4.963791E-03
+B061F09      60 -5.546092E-03
+B061F09      61  3.339843E-03
+B061F09      62  8.037912E-03
+B061F09      63 -3.104676E-04
+B061F09      64 -9.603305E-03
+B061F09      65 -3.949339E-03
+B061F09      66  9.548740E-03
+B061F09      67  8.946343E-03
+B061F09      68 -7.280147E-03
+B061F09      69 -1.387300E-02
+B061F09      70  2.430609E-03
+B061F09      71  1.765887E-02
+B061F09      72  5.034266E-03
+B061F09      73 -1.905338E-02
+B061F09      74 -1.475747E-02
+B061F09      75  1.669723E-02
+B061F09      76  2.599515E-02
+B061F09      77 -9.087759E-03
+B061F09      78 -3.768949E-02
+B061F09      79 -5.815034E-03
+B061F09      80  4.860342E-02
+B061F09      81  3.231126E-02
+B061F09      82 -5.749572E-02
+B061F09      83 -8.599027E-02
+B061F09      84  6.330780E-02
+B061F09      85  3.113786E-01
+B061F09      86  4.346714E-01
+#		
+#		+                      +------------------------------+                       +
+#		+                      |   Decimation,  MCNS ch HN1   |                       +
+#		+                      +------------------------------+                       +
+#		
+B057F03     Stage sequence number:                 6
+B057F04     Input sample rate:                     4.000000E+02
+B057F05     Decimation factor:                     2
+B057F06     Decimation offset:                     0
+B057F07     Estimated delay (seconds):             0.000000E+00
+B057F08     Correction applied (seconds):          0.000000E+00
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |       Channel Gain,  MCNS ch HN1      |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 6
+B058F04     Gain:                                  1.000000E+00
+B058F05     Frequency of gain:                     1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		
+#		+                  +---------------------------------------+                  +
+#		+                  |   Channel Sensitivity,  MCNS ch HN1   |                  +
+#		+                  +---------------------------------------+                  +
+#		
+B058F03     Stage sequence number:                 0
+B058F04     Sensitivity:                           4.273360E+05
+B058F05     Frequency of sensitivity:              1.000000E+00 HZ
+B058F06     Number of calibrations:                0
+#		

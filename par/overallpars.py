@@ -5,6 +5,7 @@
 ############################Code definitions###################################
 indir='/Volumes/Taranaki_01/data/boseca/SAMBA_mar09/' # Location of raw reftek data
 outdir='/media/Elements/SAMBA_archive/SAMBA_mseed'# Don't change temporary directory
+<<<<<<< HEAD
 contbase="/home/sw/seisan/WAV/SAMCO"              # Location for continuous
                                                   # waveforms
 trigbase="/home/sw/seisan/WAV/SAMTR"              # Location for triggered
@@ -97,8 +98,6 @@ stalist=[STATION('COSA','AF','10','915E',('SHZ','SH1','SH2')),
         # STATION('NOBU','CO','10','AC09',('HHZ','HH1','HH2')),
         # STATION('STBA','CO','10','AC40',('HHZ','HH1','HH2')),
         # STATION('TEPE','CO','10','9F96',('HHZ','HH1','HH2'))]
-
-# stalist=[STATION('WMSZ','DF','10','953D',('HHZ','HHN','HHE')),
        # STATION('WPSZ','DF','10','92D1',('HHZ','HHN','HHE')),
        # STATION('WDSZ','DF','10','9337',('HHZ','HHN','HHE')),
        # STATION('WTSZ','DF','10','9793',('HHZ','HHN','HHE')),
