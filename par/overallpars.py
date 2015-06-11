@@ -3,20 +3,25 @@
 # A python style declaration of variables used in rt2detection.py
 """
 ############################Code definitions###################################
-indir='/Volumes/Taranaki_01/data/boseca/SAMBA_mar09/' # Location of raw reftek data
-outdir='/media/Elements/SAMBA_archive/SAMBA_mseed'# Don't change temporary directory
-contbase="/home/sw/seisan/WAV/COSAC"              # Location for continuous
+# indir='/Volumes/Taranaki_01/data/boseca/SAMBA_mar09/' # Location of raw reftek data
+indir='/Volumes/GeoPhysics_07/users-data/warrenem/june2015' # Location of raw reftek data
+outdir='/Volumes/GeoPhysics_09/users-data/chambeca/COSAW_mseed'# Don't change temporary directory
+contbase="/Volumes/GeoPhysics_09/users-data/chambeca/COSA_wanaka/WAV/COSAC"
+# Location for continuous
                                                   # waveforms
-trigbase="/home/sw/seisan/WAV/COSAW"              # Location for triggered
+trigbase="/Volumes/GeoPhysics_09/users-data/chambeca/COSA_wanaka/WAV/COSAW"
+# Location for triggered
                                                   # waveforms
-sfilebase="/home/sw/seisan/REA/COSAW"             # Location for triggered
+sfilebase="/Volumes/GeoPhysics_09/users-data/chambeca/COSA_wanaka/REA/COSAW"
+# Location for triggered
                                                   # s-files
 network='COSA_' # Needs to be five characters, e.g. SAMBA or RTAF_ - pad with
                 # an underscore
-archive=True    # Set to True to turn archiving on, will make daylong miniseed
+archive=False   # Set to True to turn archiving on, will make daylong miniseed
                 # files in the archive directory in Yyyyy/Rddd.01 type directories
-arcdir='/Volumes/GeoPhysics_09/users-data/chambeca/SAMBA_archive/day_volumes_S'# Directory to archive data to
-detrout='obspy' # Can either use the obspy triggering routine, or the seisan
+arcdir='/Volumes/GeoPhysics_09/users-data/chambeca/COSA_wanaka/COSA_archive'
+                # Directory to archive data to
+detrout='pick'  # Can either use the obspy triggering routine, or the seisan
                 # condet routine (condet is a little less simple to use and is
                 # not yet implimented).
 routype='classic' # Required for calum's python based routine, see that file
@@ -30,8 +35,8 @@ rmold=False     # Boolean - if you want to remove old data then set this to
                 # at the end.
 picker='FP'     # Picker method, can be set to False to not run one - calls
                 # external routines
-rawconv=True    # Set to true to look for new data in 'indir'
-merge=True      # Set to true to merge data in MS_data into multiplexed
+rawconv=False   # Set to true to look for new data in 'indir'
+merge=False     # Set to true to merge data in MS_data into multiplexed
                 # miniseed files of length 'filelenwant'
 maxres=1.5      # If picker is used, this is the maximum residual to allow for
                 # location
@@ -43,17 +48,18 @@ overwrite=False # Set to false to preserve old s-files, you will have to move
 neo='False'     # If you have downloaded the data using neo then we will use
                 # the routine for that. Currently set to string to allow for
                 # a special 'Sometimes' case
-rename=True     # Set to True to use the channel names defined below, if false,
+rename=False    # Set to True to use the channel names defined below, if false,
                 # channels will be named as output by rt2ms (which at this stage
                 # if called from here will be the wired 101,102,103 names.
                 # I suggest only setting this to False if you have already
                 # converted your raw data
 
 # Descide whether you want it to run for all time or from a start to end date
-alltime=True    # Set to true to run through all time, will desregard start and
+alltime=False   # Set to true to run through all time, will desregard start and
                 # end time arguments
-startD='2014/03/26' # Start time for alltime=False in yyyy/mm/dd
-endD = '2015/03/10' # End time for alltime=False in yyyy/mm/dd
+# startD='2014/03/26' # Start time for alltime=False in yyyy/mm/dd
+startD='2015/03/04' # Start time for alltime=False in yyyy/mm/dd
+endD = '2015/06/02' # End time for alltime=False in yyyy/mm/dd
 getGeoNet =True # Boolean to get geonet data, if true requires the geostalist
                 # variable to be complete.
 # Define local class
@@ -89,6 +95,7 @@ class STATION:
         # STATION('WHYM','AF','10','AC14',('SHZ','SHN','SHE'))]
 
 stalist=[STATION('ASPR','CO','10','915A',('HHZ','HH1','HH2')),
+        STATION('HAAS','CO','10','9F97',('SHZ','SH1','SH2')),
         STATION('HUVA','CO','10','9F95',('HHZ','HH1','HH2')),
         STATION('KING','CO','10','915D',('HHZ','HH1','HH2')),
         STATION('MORV','CO','10','915B',('HHZ','HH1','HH2')),
@@ -107,4 +114,13 @@ geostalist=[STATION('WKZ','NZ','10','',('HHZ','HHE','HHN')),
             STATION('MLZ','NZ','10','',('HHZ','HHE','HHN')),
             STATION('JCZ','NZ','10','',('HHZ','HHE','HHN')),
             STATION('EAZ','NZ','10','',('HHZ','HHE','HHN')),
-            STATION('MSZ','NZ','10','',('HHZ','HHE','HHN'))]
+            STATION('FOZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('LBZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('MSZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('MCNZ','NZ','20','',('BNZ','BN1','BN2')),
+            STATION('MOSS','NZ','20','',('BNZ','BN1','BN2','BNN','BNE')),
+            STATION('NSBS','NZ','21','',('BNZ','BN1','BN2','BNE','BNN')),
+            STATION('QTPS','NZ','20','',('BNZ','BN1','BN2')),
+            STATION('TAFS','NZ','20','',('BNZ','BN1','BN2')),
+            STATION('TWAS','NZ','20','',('BNZ','BN1','BN2')),
+            STATION('WNPZ','NZ','20','',('BNZ','BN1','BN2'))]
