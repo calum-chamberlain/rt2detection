@@ -31,6 +31,8 @@ rmold=False     # Boolean - if you want to remove old data then set this to
 picker='FP'     # Picker method, can be set to False to not run one - calls
                 # external routines
 rawconv=True    # Set to true to look for new data in 'indir'
+converted=True  # Boolean, set to true if raw data have been converted and are
+                # in station folders
 merge=False     # Set to true to merge data in MS_data into multiplexed
                 # miniseed files of length 'filelenwant'
 maxres=1.5      # If picker is used, this is the maximum residual to allow for

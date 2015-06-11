@@ -134,6 +134,7 @@ if __name__ == '__main__':
             for i in range(0,int((endD-startD)/86400)):
                 rundates+=[startD+(i*86400)]
         from par.overallpars import STATION
+        import pro.Sfile_util as Sfile_util
 
     # Import necessary libraries
     from subprocess import call
@@ -254,18 +255,18 @@ if __name__ == '__main__':
     if defaults.merge or defaults.archive:
         # Check that output does not span multiple days
         if not defaults.alltime:
-            if defaults.rawconv:
+            if defaults.rawconv or defaults.converted:
                 daylist=[]
                 for date in rundates:
                     daylist+=glob.glob(defaults.outdir+'/*/Y'+str(date.year)+\
-                                       '/R'+str(date.julday).zfill(3))+'.01'
+                                       '/R'+str(date.julday).zfill(3)+'.01')
             else:
                 daylist=[]
                 for date in rundates:
                     daylist+=glob.glob(defaults.outdir+'/Y'+str(date.year)\
                                       +'/R'+str(date.julday).zfill(3)+'.01')
         else:
-            if defaults.rawconv:
+            if defaults.rawconv or defaults.converted:
                 daylist=glob.glob(defaults.outdir+'/*/Y*/R*')
             else:
                 daylist=glob.glob(defaults.outdir+'/Y*/R*')
@@ -287,50 +288,86 @@ if __name__ == '__main__':
         for daypath in daylist:
             yeardir=daypath.split('/')[len(daypath.split('/'))-2]   # Will be of the form Y2014
             daydir=daypath.split('/')[len(daypath.split('/'))-1]    # Will be of the form R201.01
+            day=UTCDateTime(yeardir[1:5]+daydir[1:4])
             if daycount < len(daylist)-1:
                 nextdaypath=daylist[daycount+1]
             print '\n'+daydir
-            if defaults.rawconv=='True':
-                st=obsread(defaults.outdir+'/*/'+yeardir+'/'+daydir+'/*.m')
+            if 'st' in locals():
+                del st
+            if defaults.rawconv or defaults.converted:
+                rawfiles=glob.glob(defaults.outdir+'/*/'+yeardir+'/'+daydir+'/*.m')
             else:
-                st=obsread(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
+                rawfiles=glob.glob(defaults.outdir+'/'+yeardir+'/'+daydir+'/*.m')
+            for rawfile in rawfiles:
+                if not 'st' in locals():
+                    try:
+                        st=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
+                else:
+                    try:
+                        st+=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
             print 'Merging data'
             try:
-                st = st.detrend('simple')    # Detrend data before filling
+                # for tr in st:
+                    # tr = tr.detrend('simple')
                 st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
-                samp_rate=st[0].stats.sampling_rate
+                from scipy.stats import mode
+                true_sta=[]
+                for tr in st:
+                    true_sta+=[tr.stats.station+'.'+tr.stats.channel]
+                true_sta=list(set(true_sta))
                 if 'st_dummy' in locals():
                     del st_dummy
-                for tr in st:
-                    if not tr.stats.sampling_rate==samp_rate:
-                        print 'station: '+tr.stats.station+' samp-rate: '+\
-                                str(tr.stats.sampling_rate)
-                    else:
-                        if 'st_dummy' in locals():
-                            st_dummy+=tr
+                print 'I have '+str(len(true_sta))+' channels of data'
+                for sta in true_sta:
+                    samp_rates=[]
+                    for tr in st.select(station=sta.split('.')[0],\
+                                        channel=sta.split('.')[1]):
+                        samp_rates+=[tr.stats.sampling_rate]
+                    samp_rate=mode(samp_rates)[0][0]
+                    for tr in st.select(station=sta.split('.')[0],\
+                                        channel=sta.split('.')[1]):
+                        if not tr.stats.sampling_rate==samp_rate:
+                            print 'station: '+tr.stats.station+' samp-rate: '+\
+                                    str(tr.stats.sampling_rate)
                         else:
-                            st_dummy=Stream(tr)
+                            if 'st_dummy' in locals():
+                                st_dummy+=tr
+                            else:
+                                st_dummy=Stream(tr)
                 st=st_dummy
-                st = st.detrend('simple')
+                # for tr in st:
+                    # tr = tr.detrend('simple')
                 st.merge(fill_value='interpolate')
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
-                print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
-                        str(st[0].stats.starttime.month)+'/'+\
-                        str(st[0].stats.starttime.day)+' '+\
-                        str(st[0].stats.starttime.hour)+':'+\
-                        str(st[0].stats.starttime.minute)+':'+\
-                        str(st[0].stats.starttime.second)
+                starttimes=[]
+                for tr in st:
+                    starttimes+=[tr.stats.starttime]
+                starttime=min(starttimes)
+                print 'They start at: '+str(starttime.year)+'/'+\
+                        str(starttime.month)+'/'+\
+                        str(starttime.day)+' '+\
+                        str(starttime.hour)+':'+\
+                        str(starttime.minute)+':'+\
+                        str(starttime.second)
             if not defaults.alltime:     # If we are not running through all the
                                          # then there should be data for the
                                          # previous day to read in
                 try:
                     prevday=st[0].stats.starttime-86400
-                    prevdaypath=glob.glob(defaults.outdir+'/Y'+str(prevday.year)+
-                                          '/R'+str(prevday.julday)+'.01')[0]
+                    if defaults.rawconv or defaults.converted:
+                        prevdaypath=glob.glob(defaults.outdir+'/*/Y'+str(prevday.year)+
+                                              '/R'+str(prevday.julday)+'.01')[0]
+                    else:
+                        prevdaypath=glob.glob(defaults.outdir+'/Y'+str(prevday.year)+
+                                              '/R'+str(prevday.julday)+'.01')[0]
                 except:
                     print 'Unable to find directory containing previous days data'
             # Work out true starttime and change channel names
@@ -350,115 +387,138 @@ if __name__ == '__main__':
             if 'prevdaypath' in locals():
                 prevyeardir=prevdaypath.split('/')[len(prevdaypath.split('/'))-2]
                 prevdaydir=prevdaypath.split('/')[len(prevdaypath.split('/'))-1]
-                if defaults.rawconv:
+                if defaults.rawconv or defaults.converted:
                     if defaults.debug==1:
                         print 'Trying to read previous data from: '+defaults.outdir+'/*/'+\
                                 prevyeardir+'/'+prevdaydir+'/*.*.23.*.m'
-                    st+=obsread(defaults.outdir+'/*/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/*/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
                 else:
                     if defaults.debug==1:
                         print 'Trying to read previous data from: '+defaults.outdir+'/'+\
                                 prevyeardir+'/'+prevdaydir+'/*.*.23.*.m'
-                    st+=obsread(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/'+prevyeardir+'/'+prevdaydir+'/*.*.23.*.m')
+                for rawfile in rawfiles:
+                    try:
+                        st+=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
 
                 try:
-                    st = st.detrend('simple')
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
                     st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
-                    samp_rate=st[0].stats.sampling_rate
+                    from scipy.stats import mode
+                    true_sta=[]
+                    for tr in st:
+                        true_sta+=[tr.stats.station+'.'+tr.stats.channel]
+                    true_sta=list(set(true_sta))
                     if 'st_dummy' in locals():
                         del st_dummy
-                    for tr in st:
-                        if not tr.stats.sampling_rate==samp_rate:
-                            print 'station: '+tr.stats.station+' samp-rate: '+\
-                                    str(tr.stats.sampling_rate)
-                        else:
-                            if 'st_dummy' in locals():
-                                st_dummy+=tr
+                    print 'I have '+str(len(true_sta))+' channels of data'
+                    for sta in true_sta:
+                        samp_rates=[]
+                        for tr in st.select(station=sta.split('.')[0],\
+                                            channel=sta.split('.')[1]):
+                            samp_rates+=[tr.stats.sampling_rate]
+                        samp_rate=mode(samp_rates)[0][0]
+                        for tr in st.select(station=sta.split('.')[0],\
+                                            channel=sta.split('.')[1]):
+                            if not tr.stats.sampling_rate==samp_rate:
+                                print 'station: '+tr.stats.station+' samp-rate: '+\
+                                        str(tr.stats.sampling_rate)
                             else:
-                                st_dummy=Stream(tr)
+                                if 'st_dummy' in locals():
+                                    st_dummy+=tr
+                                else:
+                                    st_dummy=Stream(tr)
                     st=st_dummy
-                    st = st.detrend('simple')
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
                     st.merge(fill_value='interpolate')
-
-
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
-                    print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
-                            str(st[0].stats.starttime.month)+'/'+\
-                            str(st[0].stats.starttime.day)+' '+\
-                            str(st[0].stats.starttime.hour)+':'+\
-                            str(st[0].stats.starttime.minute)+':'+\
-                            str(st[0].stats.starttime.second)
+                    starttimes=[]
+                    for tr in st:
+                        starttimes+=[tr.stats.starttime]
+                    starttime=min(starttimes)
+                    print 'They start at: '+str(starttime.year)+'/'+\
+                            str(starttime.month)+'/'+\
+                            str(starttime.day)+' '+\
+                            str(starttime.hour)+':'+\
+                            str(starttime.minute)+':'+\
+                            str(starttime.second)
             if 'nextdaypath' in locals():
                 nextyeardir=nextdaypath.split('/')[len(nextdaypath.split('/'))-2]
                 nextdaydir=nextdaypath.split('/')[len(nextdaypath.split('/'))-1]
-                if defaults.rawconv:
+                if defaults.rawconv or defaults.converted:
                     if defaults.debug==1:
                         print 'Trying to read next data from: '+defaults.outdir+'/*/'+\
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
-                    st+=obsread(defaults.outdir+'/*/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/*/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
                 else:
                     if defaults.debug==1:
                         print 'Trying to read next data from: '+defaults.outdir+'/'+\
                                 nextyeardir+'/'+nextdaydir+'/*.*.00.*.m'
-                    st+=obsread(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
+                    rawfiles=glob.glob(defaults.outdir+'/'+nextyeardir+'/'+nextdaydir+'/*.*.00.*.m')
+                for rawfile in rawfiles:
+                    try:
+                        st+=obsread(rawfile)
+                    except:
+                        print rawfile+' is corrupt'
                 try:
-                    st.detrend('simple')
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
                     st.merge(fill_value='interpolate') # merge data filling gaps
-                    #st.merge(fill_value=0)  # merge data, filling missing data with zeros -
+                    #st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
-                    samp_rate=st[0].stats.sampling_rate
+                    from scipy.stats import mode
+                    true_sta=[]
+                    for tr in st:
+                        true_sta+=[tr.stats.station+'.'+tr.stats.channel]
+                    true_sta=list(set(true_sta))
                     if 'st_dummy' in locals():
                         del st_dummy
-                    for tr in st:
-                        if not tr.stats.sampling_rate==samp_rate:
-                            print 'station: '+tr.stats.station+' samp-rate: '+\
-                                    str(tr.stats.sampling_rate)
-                        else:
-                            if 'st_dummy' in locals():
-                                st_dummy+=tr
+                    print 'I have '+str(len(true_sta))+' channels of data'
+                    for sta in true_sta:
+                        samp_rates=[]
+                        for tr in st.select(station=sta.split('.')[0],\
+                                            channel=sta.split('.')[1]):
+                            samp_rates+=[tr.stats.sampling_rate]
+                        samp_rate=mode(samp_rates)[0][0]
+                        for tr in st.select(station=sta.split('.')[0],\
+                                            channel=sta.split('.')[1]):
+                            if not tr.stats.sampling_rate==samp_rate:
+                                print 'station: '+tr.stats.station+' samp-rate: '+\
+                                        str(tr.stats.sampling_rate)
                             else:
-                                st_dummy=Stream(tr)
+                                if 'st_dummy' in locals():
+                                    st_dummy+=tr
+                                else:
+                                    st_dummy=Stream(tr)
                     st=st_dummy
-                    st.detrend('simple')
+                    # for tr in st:
+                        # tr = tr.detrend('simple')
                     st.merge(fill_value='interpolate')
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
-                    print 'They start at: '+str(st[0].stats.starttime.year)+'/'+\
-                            str(st[0].stats.starttime.month)+'/'+\
-                            str(st[0].stats.starttime.day)+' '+\
-                            str(st[0].stats.starttime.hour)+':'+\
-                            str(st[0].stats.starttime.minute)+':'+\
-                            str(st[0].stats.starttime.second)
+                    endtimes=[]
+                    for tr in st:
+                        endtimes+=[tr.stats.endtime]
+                    endtime=min(endtimes)
+                    print 'They end at: '+str(endtime.year)+'/'+\
+                            str(endtime.month)+'/'+\
+                            str(endtime.day)+' '+\
+                            str(endtime.hour)+':'+\
+                            str(endtime.minute)+':'+\
+                            str(endtime.second)
 
-##########################Download GeoNet data for day if required############
-            if defaults.getGeoNet:
-                print 'Downloading GeoNet data for the day'
-                oldlen = len(st)
-                import subprocess
-                pad=''
-                for station in defaults.geostalist:
-                    if len(station.name) == 3:
-                        pad = '..'
-                    elif len(station.name) == 4:
-                        pad = '.'
-                    for channel in station.channels:
-                        subprocess.call(['java','-jar','pro/GeoNetCWBQuery-4.2.0-bin.jar',
-                            '-d','1d','-t','ms','-b',day.year+day.julday+' 00:00:00',
-                            '-s','NZ'+station.name+pad+channel,
-                            '-o',daypath+'/%z%y%M%D.%s.%c.ms'])
-                        st+=read(daypath+'/*.'+station.name+'.'+channel+'.ms')
-                print 'I have downloaded and read in an extra '+\
-                        str(len(st)-oldlen)+' traces'
-
-            prevdaypath=daypath
             # Change the channel names from those output by rt2ms (101,102,103) to the
             # true channel names taken from the station definitions above
             if defaults.rename:
@@ -474,7 +534,32 @@ if __name__ == '__main__':
                     if tr.stats.channel == '102':
                         tr.stats.channel=defaults.stalist[staid].channels[1]
                     if tr.stats.channel == '103':
-                        tr.stats.channel=defaults.stalist[staid].channels[3]
+                        tr.stats.channel=defaults.stalist[staid].channels[2]
+##########################Download GeoNet data for day if required############
+            if defaults.getGeoNet:
+                print 'Downloading GeoNet data for the day'
+                oldlen = len(st)
+                import subprocess
+                pad=''
+                for station in defaults.geostalist:
+                    if len(station.name) == 3:
+                        pad = '..'
+                    elif len(station.name) == 4:
+                        pad = '.'
+                    for channel in station.channels:
+                        subprocess.call(['java','-jar','pro/GeoNetCWBQuery-4.2.0-bin.jar',
+                            '-d','1d','-t','ms','-b',str(day.year)+','+\
+                                         str(day.julday).zfill(3)+'-00:00:00',
+                            '-s','NZ'+station.name+pad+channel,
+                            '-o',daypath+'/%z%y%M%D.%s.%c.ms'])
+                        try:
+                            st+=obsread(daypath+'/*.'+station.name+'.'+channel+'.ms')
+                        except:
+                            print 'Data have not been downloaded'
+                print 'I have downloaded and read in an extra '+\
+                        str(len(st)-oldlen)+' traces'
+
+            prevdaypath=daypath
 
 
             # Archive data here
@@ -494,7 +579,10 @@ if __name__ == '__main__':
                             tr.stats.channel+'.'+str(tr.stats.starttime.year)+'.'+\
                             str(tr.stats.starttime.julday).zfill(3)
                     if len(tr.data) > 0:
-                        tr.write(outpath,format="MSEED", encoding=defaults.dformat)
+                        try:
+                            tr.write(outpath,format="MSEED", encoding=defaults.dformat)
+                        except:
+                            raise IOError("Issue writing "+tr.stats.station)
                     sys.stdout.write('Archived file written as: '+outpath+'\r')
                     sys.stdout.flush()
             print '\n'
@@ -621,7 +709,6 @@ if __name__ == '__main__':
             # f1.write('#'+str(listno).rjust(3)+'  '+wavefile+'\n')
         # f1.close()
         print 'Generating s-files'
-        import pro.Sfile_util as Sfile_util
         import ntpath
         sfilelist=[]
         for wavepath in wavelist:
@@ -645,30 +732,34 @@ if __name__ == '__main__':
         # by Calum Chamberlain.
         i=0
         for sfile in sfilelist:
-            wavefile=Sfile_util.readwavename(sfile)
-            # wavefile=ntpath.basename(wavelist[i])
-            if not os.path.isfile(wavefile):
-                print 'Wavefile '+wavefile+' not found, will not locate'
+            wavefiles=Sfile_util.readwavename(sfile)
+            if len(wavefiles) == 0:
+                print 'Found no wavefile for '+sfile
                 continue
-            i+=1
-            print(["pro/rdtrigL","-sfile",sfile,"-wavefile",wavefile,\
-                    "-locate","1","-maxres",str(defaults.maxres),\
-                    "-keep","1"])
-            call(["pro/rdtrigL","-sfile",sfile,"-wavefile",wavefile,\
-                    "-locate","1","-maxres",str(defaults.maxres),\
-                    "-keep","1"])
-            if not os.path.isdir(defaults.sfilebase+'/'+sfile[13:17]):
-                os.mkdir(defaults.sfilebase+'/'+sfile[13:17])
-            if not os.path.isdir(defaults.sfilebase+'/'+sfile[13:17]+'/'\
-                                 +sfile[17:19]):
-                os.mkdir(defaults.sfilebase+'/'+sfile[13:17]+'/'\
-                    +sfile[17:19])
-            shutil.move(sfile,defaults.sfilebase+'/'+sfile[13:17]+'/'\
-                    +sfile[17:19]+'/'+sfile) # Move the picked sfile to the
+            for wavefile in wavefiles:
+                # wavefile=ntpath.basename(wavelist[i])
+                if not os.path.isfile(wavefile):
+                    print 'Wavefile '+wavefile+' not found, will not locate'
+                    continue
+                i+=1
+                print(["pro/rdtrigL","-sfile",sfile,"-wavefile",wavefile,\
+                        "-locate","0","-maxres",str(defaults.maxres),\
+                        "-keep","1"])
+                call(["pro/rdtrigL","-sfile",sfile,"-wavefile",wavefile,\
+                        "-locate","0","-maxres",str(defaults.maxres),\
+                        "-keep","1"])
+                if not os.path.isdir(defaults.sfilebase+'/'+sfile[13:17]):
+                    os.mkdir(defaults.sfilebase+'/'+sfile[13:17])
+                if not os.path.isdir(defaults.sfilebase+'/'+sfile[13:17]+'/'\
+                                     +sfile[17:19]):
+                    os.mkdir(defaults.sfilebase+'/'+sfile[13:17]+'/'\
+                        +sfile[17:19])
+                shutil.move(sfile,defaults.sfilebase+'/'+sfile[13:17]+'/'\
+                        +sfile[17:19]+'/'+sfile) # Move the picked sfile to the
                                                    # correct place.
-            print 'Written file as: '+sfile,defaults.sfilebase+'/'+sfile[13:17]+'/'\
-                    +sfile[17:19]+'/'+sfile
-            os.remove(wavefile) # Remove local wavefiles
+                print 'Written file as: '+sfile,defaults.sfilebase+'/'+sfile[13:17]+'/'\
+                        +sfile[17:19]+'/'+sfile
+                os.remove(wavefile) # Remove local wavefiles
     f.close()
 
 
