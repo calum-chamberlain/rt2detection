@@ -313,7 +313,7 @@ if __name__ == '__main__':
             try:
                 # for tr in st:
                     # tr = tr.detrend('simple')
-                st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
+                st.merge()  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
             except:
                 print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -344,7 +344,7 @@ if __name__ == '__main__':
                 st=st_dummy
                 # for tr in st:
                     # tr = tr.detrend('simple')
-                st.merge(fill_value='interpolate')
+                st.merge()
             if defaults.debug==1:
                 print 'I have read in '+str(len(st))+' traces'
                 starttimes=[]
@@ -406,7 +406,7 @@ if __name__ == '__main__':
                 try:
                     # for tr in st:
                         # tr = tr.detrend('simple')
-                    st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
+                    st.merge()  # merge data, filling missing data with zeros -
                                         # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -437,7 +437,7 @@ if __name__ == '__main__':
                     st=st_dummy
                     # for tr in st:
                         # tr = tr.detrend('simple')
-                    st.merge(fill_value='interpolate')
+                    st.merge()
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
@@ -472,8 +472,8 @@ if __name__ == '__main__':
                 try:
                     # for tr in st:
                         # tr = tr.detrend('simple')
-                    st.merge(fill_value='interpolate') # merge data filling gaps
-                    #st.merge(fill_value='interpolate')  # merge data, filling missing data with zeros -
+                    st.merge() # merge data filling gaps
+                    #st.merge()  # merge data, filling missing data with zeros -
                                             # allows for writing to multiplexed miniseed
                 except:
                     print 'Could not merge data for this day - same IDs but different sampling rates likely'
@@ -504,7 +504,7 @@ if __name__ == '__main__':
                     st=st_dummy
                     # for tr in st:
                         # tr = tr.detrend('simple')
-                    st.merge(fill_value='interpolate')
+                    st.merge()
 
                 if defaults.debug==1:
                     print 'I have read in '+str(len(st))+' traces'
@@ -581,6 +581,9 @@ if __name__ == '__main__':
                     if len(tr.data) > 0:
                         try:
                             tr.write(outpath,format="MSEED", encoding=defaults.dformat)
+                        except NotImplementedError:
+                            tr=tr.split()
+                            tr.write(outpath, format="MSEED", encoding=defaults.dformat)
                         except:
                             raise IOError("Issue writing "+tr.stats.station)
                     sys.stdout.write('Archived file written as: '+outpath+'\r')
@@ -620,6 +623,14 @@ if __name__ == '__main__':
                                 os.mkdir(defaults.contbase+'/'+\
                                             str(st1[0].stats.starttime.year)+'/'+\
                                             str(st1[0].stats.starttime.month).zfill(2))
+                        except:
+                            IOError("Can't make directories")
+                        try:
+                            st1.write(filename,format="MSEED",endcoding=defaults.dformat)
+                            sys.stdout.write('File written as: '+filename+'\r')
+                            sys.stdout.flush()
+                        except NotImplementedError:
+                            st1.split()
                             st1.write(filename,format="MSEED",endcoding=defaults.dformat)
                             sys.stdout.write('File written as: '+filename+'\r')
                             sys.stdout.flush()
@@ -631,18 +642,35 @@ if __name__ == '__main__':
                                 f.write(str(tr.stats))
                                 f.write('\n\n')
                 else:
-                    filename=defaults.contbase+'/'+str(st[0].stats.starttime.year)+'/'+\
-                        str(st[0].stats.starttime.month).zfill(2)+'/'+\
-                        str(st[0].stats.starttime.year)+'-'+\
-                        str(st[0].stats.starttime.month).zfill(2)+'-'+\
-                        str(st[0].stats.starttime.day).zfill(2)+'-'+\
-                        str(st[0].stats.starttime.hour).zfill(2)+\
-                        str(st[0].stats.starttime.minute).zfill(2)+'-'+\
-                        str(st[0].stats.starttime.second).zfill(2)+'.'+\
-                        defaults.network+'_'+str(len(st)).zfill(3)+'_00'
-                    st.write(filename,format="MSEED",endcoding=defaults.dformat)
-                    sys.stdout.write('File written as: '+filename+'\r')
-                    sys.stdout.flush()
+                    try:
+                        if not os.path.isdir(defaults.contbase+'/'+\
+                                        str(st1[0].stats.starttime.year)):
+                            os.mkdir(defaults.contbase+'/'+\
+                                       str(st1[0].stats.starttime.year))
+                        if not os.path.isdir(defaults.contbase+'/'+\
+                                        str(st1[0].stats.starttime.year)+'/'+\
+                                        str(st1[0].stats.starttime.month).zfill(2)):
+                            os.mkdir(defaults.contbase+'/'+\
+                                        str(st1[0].stats.starttime.year)+'/'+\
+                                        str(st1[0].stats.starttime.month).zfill(2))
+                    except:
+                        IOError("Can't make directories")
+                    try:
+                        st1.write(filename,format="MSEED",endcoding=defaults.dformat)
+                        sys.stdout.write('File written as: '+filename+'\r')
+                        sys.stdout.flush()
+                    except NotImplementedError:
+                        st1.split()
+                        st1.write(filename,format="MSEED",endcoding=defaults.dformat)
+                        sys.stdout.write('File written as: '+filename+'\r')
+                        sys.stdout.flush()
+                    except:
+                        print('File not written, unknown error, check log:')
+                        print(filename)
+                        for tr in st1:
+                            f.write(filename+'\n')
+                            f.write(str(tr.stats))
+                            f.write('\n\n')
             st=[]
             daycount+=1
 
