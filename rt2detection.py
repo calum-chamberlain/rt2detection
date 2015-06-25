@@ -553,7 +553,9 @@ if __name__ == '__main__':
                             '-s','NZ'+station.name+pad+channel,
                             '-o',daypath+'/%z%y%M%D.%s.%c.ms'])
                         try:
-                            st+=obsread(daypath+'/*.'+station.name+'.'+channel+'.ms')
+                            geotr=obsread(daypath+'/*.'+station.name+'.'+channel+'.ms')
+                            geotr.merge()
+                            st+=geotr
                         except:
                             print 'Data have not been downloaded'
                 print 'I have downloaded and read in an extra '+\
@@ -594,7 +596,19 @@ if __name__ == '__main__':
                 datalen=dataend-datastart
                 if datalen > defaults.filelenwant:
                     for hour in range(1,int(round(datalen/defaults.filelenwant)+1)):
-                        st1=deepcopy(st)
+                        try:
+                            st1=st.copy()
+                        except ZeroDivisionError:
+                            for tr in st:
+                                if not 'st1' in locals():
+                                    st1=Stream(tr.copy())
+                                else:
+                                    try:
+                                        st1+=tr.copy()
+                                    except ZeroDivisionError:
+                                        print tr.stats.station+' has '+\
+                                                str(tr.stats.npts)+' data points'
+                                        print("Error copying the above trace")
                         # st1=st.copy() # Copy file to preserve the original data
                         cutstart=datastart+((hour-1)*defaults.filelenwant)
                         # Edit cut start to be cutting at the hour
@@ -630,10 +644,18 @@ if __name__ == '__main__':
                             sys.stdout.write('File written as: '+filename+'\r')
                             sys.stdout.flush()
                         except NotImplementedError:
-                            st1.split()
-                            st1.write(filename,format="MSEED",endcoding=defaults.dformat)
-                            sys.stdout.write('File written as: '+filename+'\r')
-                            sys.stdout.flush()
+                            try:
+                                st1=st1.split()
+                                st1.write(filename,format="MSEED",endcoding=defaults.dformat)
+                                sys.stdout.write('File written as: '+filename+'\r')
+                                sys.stdout.flush()
+                            except:
+                                print('File not written - issue splitting?')
+                                print(filename)
+                                for tr in st1:
+                                    f.write(filename+'\n')
+                                    f.write(str(tr.stats))
+                                    f.write('\n\n')
                         except:
                             print('File not written, unknown error, check log:')
                             print(filename)
@@ -660,10 +682,18 @@ if __name__ == '__main__':
                         sys.stdout.write('File written as: '+filename+'\r')
                         sys.stdout.flush()
                     except NotImplementedError:
-                        st1.split()
-                        st1.write(filename,format="MSEED",endcoding=defaults.dformat)
-                        sys.stdout.write('File written as: '+filename+'\r')
-                        sys.stdout.flush()
+                        try:
+                            st1=st1.split()
+                            st1.write(filename,format="MSEED",endcoding=defaults.dformat)
+                            sys.stdout.write('File written as: '+filename+'\r')
+                            sys.stdout.flush()
+                        except:
+                            print('File not written - issue splitting?')
+                            print(filename)
+                            for tr in st1:
+                                f.write(filename+'\n')
+                                f.write(str(tr.stats))
+                                f.write('\n\n')
                     except:
                         print('File not written, unknown error, check log:')
                         print(filename)
