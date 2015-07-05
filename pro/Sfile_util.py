@@ -218,10 +218,9 @@ def readpicks(sfilename):
             phase=line[10:14].strip()
             polarity=line[6]
         try:
-            if int(line[23:25]) == 60:
-                time=UTCDateTime(evtime.year,evtime.month,evtime.day,
-                                 int(line[18:20]),int(line[20:22]),int(line[23:25]),
-                                 int(line[26:28]))
+            time=UTCDateTime(evtime.year,evtime.month,evtime.day,
+                             int(line[18:20]),int(line[20:22]),int(line[23:25]),
+                             int(line[26:28]))
         except (ValueError):
             time=UTCDateTime(evtime.year,evtime.month,evtime.day,
                              int(line[18:20]),int(line[20:22]),0,\
