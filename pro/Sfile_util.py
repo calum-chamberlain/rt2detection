@@ -141,10 +141,16 @@ def readheader(sfilename):
             if line[79]=='1':
                 line=topline
                 try:
-                    sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
-                                                int(topline[8:10]),int(topline[11:13]),
-                                                int(topline[13:15]),int(topline[16:18])
-                                                ,int(topline[19:20])*10)
+                    if int(topline[16:18]) == 60:
+                        sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
+                                            int(topline[8:10]),int(topline[11:13]),
+                                            int(topline[13:15])+1,0
+                                            ,int(topline[19:20])*10)
+                    else:
+                        sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
+                                            int(topline[8:10]),int(topline[11:13]),
+                                            int(topline[13:15]),int(topline[16:18])
+                                            ,int(topline[19:20])*10)
                 except:
                     sfilename_header.time=UTCDateTime(0)
                 sfilename_header.loc_mod_ind=topline[21]
@@ -212,12 +218,14 @@ def readpicks(sfilename):
             phase=line[10:14].strip()
             polarity=line[6]
         try:
-            time=UTCDateTime(evtime.year,evtime.month,evtime.day,
-                             int(line[18:20]),int(line[20:22]),int(line[23:25]),
-                             int(line[26:28]))
+            if int(line[23:25]) == 60:
+                time=UTCDateTime(evtime.year,evtime.month,evtime.day,
+                                 int(line[18:20]),int(line[20:22]),int(line[23:25]),
+                                 int(line[26:28]))
         except (ValueError):
             time=UTCDateTime(evtime.year,evtime.month,evtime.day,
-                             int(line[18:20]),int(line[20:22]),0,0)
+                             int(line[18:20]),int(line[20:22]),0,\
+                             int(line[26:28]))
             time+=60 # Add 60 seconds on to the time, this copes with s-file
         coda=_int_conv(line[28:33])
         amplitude=_float_conv(line[34:40])
