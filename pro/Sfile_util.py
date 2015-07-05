@@ -104,7 +104,13 @@ def readheader(sfilename):
     if topline[79]==' ' or topline[79]=='1':
         # Topline contains event information
         try:
-            sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
+            if int(topline[16:18]) == 60:
+                sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
+                                        int(topline[8:10]),int(topline[11:13]),
+                                        int(topline[13:15])+1,0
+                                        ,int(topline[19:20])*10)
+            else:
+                sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
                                         int(topline[8:10]),int(topline[11:13]),
                                         int(topline[13:15]),int(topline[16:18])
                                         ,int(topline[19:20])*10)
