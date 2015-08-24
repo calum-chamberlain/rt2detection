@@ -83,6 +83,12 @@ if __name__ == '__main__':
             if debug:
                 print 'Reading in '+infile
             tr=obsread(infile)
+            # Fill any gaps in the data
+            tr=tr.merge(fill_value='interpolate')
+            # Make daylong
+            tr=tr.detrend('simple')
+            tr=tr.trim(starttime=date, endtime=date+86400, pad=True, fill_value=0,\
+                    nearest_sample=False)
             tr=tr[0]
             if debug:
                 print 'Read in file, it is '+str(len(tr.data))+' samples long'

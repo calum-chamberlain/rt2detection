@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-Part of the rt2detection module to read nordic format s-files and write them
+Part of the EQcorrscan module to read nordic format s-files and write them
 EQcorrscan is a python module designed to run match filter routines for
 seismology, within it are routines for integration to seisan and obspy.
 With obspy integration (which is necessary) all main waveform formats can be
@@ -13,9 +13,9 @@ All rights reserved.
 
 """
 
-# Import PICK class definition from makeSfile
 
 from obspy import UTCDateTime
+import numpy as np
 class PICK:
     """
     Pick information for seisan implimentation
@@ -94,8 +94,21 @@ def _float_conv(string):
         floatstring=float('NaN')
     return floatstring
 
+def _str_conv(number):
+    """
+    Convenience tool to convert a number, either float or into into a string,
+    if the int is 999, or the float is NaN, returns empty string.
+    """
+    if (type(number)==float and np.isnan(number)) or number==999:
+        string=' '
+    else:
+        string=str(number)
+    return string
+
 def readheader(sfilename):
+    import warnings
     f=open(sfilename,'r')
+    # Base populate to allow for empty parts of file
     sfilename_header=EVENTINFO(UTCDateTime(), '', '', '',  float('NaN'),
                                float('NaN'), float('NaN'), '', '', '', 0,
                                float('NaN'), float('NaN'), '', '', float('NaN'),
@@ -104,17 +117,18 @@ def readheader(sfilename):
     if topline[79]==' ' or topline[79]=='1':
         # Topline contains event information
         try:
-            if int(topline[16:18]) == 60:
-                sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
-                                        int(topline[8:10]),int(topline[11:13]),
-                                        int(topline[13:15])+1,0
-                                        ,int(topline[19:20])*10)
+            sfile_seconds=int(topline[16:18])
+            if sfile_seconds==60:
+                sfile_seconds=0
+                add_seconds=60
             else:
-                sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
+                add_seconds=0
+            sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
                                         int(topline[8:10]),int(topline[11:13]),
-                                        int(topline[13:15]),int(topline[16:18])
-                                        ,int(topline[19:20])*10)
+                                        int(topline[13:15]),sfile_seconds
+                                        ,int(topline[19:20])*10)+add_seconds
         except:
+            warnings.warn("Couldn't read a date from sfile: "+sfilename)
             sfilename_header.time=UTCDateTime(0)
         sfilename_header.loc_mod_ind=topline[20]
         sfilename_header.dist_ind=topline[21]
@@ -128,29 +142,23 @@ def readheader(sfilename):
         sfilename_header.nsta=_int_conv(topline[49:51])
         sfilename_header.t_RMS=_float_conv(topline[52:55])
         sfilename_header.Mag_1=_float_conv(topline[56:59])
-        sfilename_header.Mag_1_type=topline[60]
-        sfilename_header.Mag_1_agency=topline[61:63].strip()
+        sfilename_header.Mag_1_type=topline[59]
+        sfilename_header.Mag_1_agency=topline[60:63].strip()
         sfilename_header.Mag_2=_float_conv(topline[64:67])
-        sfilename_header.Mag_2_type=topline[68]
-        sfilename_header.Mag_2_agency=topline[69:71].strip()
+        sfilename_header.Mag_2_type=topline[67]
+        sfilename_header.Mag_2_agency=topline[68:71].strip()
         sfilename_header.Mag_3=_float_conv(topline[72:75])
-        sfilename_header.Mag_3_type=topline[76].strip()
-        sfilename_header.Mag_3_agency=topline[77:79].strip()
+        sfilename_header.Mag_3_type=topline[75].strip()
+        sfilename_header.Mag_3_agency=topline[76:79].strip()
     else:
         for line in f:
             if line[79]=='1':
                 line=topline
                 try:
-                    if int(topline[16:18]) == 60:
-                        sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
-                                            int(topline[8:10]),int(topline[11:13]),
-                                            int(topline[13:15])+1,0
-                                            ,int(topline[19:20])*10)
-                    else:
-                        sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
-                                            int(topline[8:10]),int(topline[11:13]),
-                                            int(topline[13:15]),int(topline[16:18])
-                                            ,int(topline[19:20])*10)
+                    sfilename_header.time=UTCDateTime(int(topline[1:5]),int(topline[6:8]),
+                                                int(topline[8:10]),int(topline[11:13]),
+                                                int(topline[13:15]),int(topline[16:18])
+                                                ,int(topline[19:20])*10)
                 except:
                     sfilename_header.time=UTCDateTime(0)
                 sfilename_header.loc_mod_ind=topline[21]
@@ -196,9 +204,9 @@ def readpicks(sfilename):
         del headerend
     for line in f:
         if 'headerend' in locals():
-            if line[79]==' ':
+            if len(line)==81 and line[79]==' ':
                 pickline+=[line]
-        if line[79]=='7':
+        elif line[79]=='7':
             header=line
             headerend=lineno
         lineno+=1
@@ -209,22 +217,21 @@ def readpicks(sfilename):
         station=line[1:6].strip()
         channel=line[6:8].strip()
         impulsivity=line[9]
-        weight=line[15]
+        weight=line[14]
         if weight=='_':
             phase=line[10:17]
             weight=''
             polarity=''
         else:
             phase=line[10:14].strip()
-            polarity=line[6]
+            polarity=line[16]
         try:
             time=UTCDateTime(evtime.year,evtime.month,evtime.day,
                              int(line[18:20]),int(line[20:22]),int(line[23:25]),
-                             int(line[26:28]))
+                             int(line[26:28])*10000)
         except (ValueError):
             time=UTCDateTime(evtime.year,evtime.month,evtime.day,
-                             int(line[18:20]),int(line[20:22]),0,\
-                             int(line[26:28]))
+                             int(line[18:20]),int(line[20:22]),0,0)
             time+=60 # Add 60 seconds on to the time, this copes with s-file
         coda=_int_conv(line[28:33])
         amplitude=_float_conv(line[34:40])
@@ -257,38 +264,44 @@ def readwavename(sfilename):
     f=open(sfilename)
     wavename=[]
     for line in f:
-        if line[79]=='6':
+        if len(line)==81 and line[79]=='6':
             wavename.append(line[1:79].strip())
     f.close()
     return wavename
 
 
-def blanksfile(wavefile,evtype,userID,outdir,overwrite):
+def blanksfile(wavefile,evtype,userID,outdir,overwrite=False, evtime=False):
     """
     Module to generate an empty s-file with a populated header for a given
     waveform.
 
-###############################################################################
+    :type wavefile: String
+    :param wavefile: Wavefile to associate with this S-file, the timing of the
+                    S-file will be taken from this file if evtime is not set
+    :type evtype: String
+    :param evtype: L,R,D
+    :type userID: String
+    :param userID: 4-charectar SEISAN USER ID
+    :type outdir: String
+    :param outdir: Location to write S-file
+    :type overwrite: Bool
+    :param overwrite: Overwrite an existing S-file, default=False
+    :type evtime: UTCDateTime
+    :param evtime: If given this will set the timing of the S-file
 
-    # Arguments are the path of a wavefile (multiplexed miniseed file required)
-    # Event type (L,R,D) and user ID (four characters as used in seisan)
-
-###############################################################################
-
-    # Example s-file format:
-    # 2014  719  617 50.2 R                                                         1
-    # ACTION:ARG 14-11-11 10:53 OP:CALU STATUS:               ID:20140719061750     I
-    # 2014/07/2014-07-19-0617-50.SAMBA_030_00                                       6
-    # STAT SP IPHASW D HRMM SECON CODA AMPLIT PERI AZIMU VELO AIN AR TRES W  DIS CAZ7
+    :returns: String, S-file name
     """
 
     from obspy import read as obsread
     import sys,os, datetime
-    try:
-        st=obsread(wavefile)
-    except:
-        print 'Wavefile: '+wavefile+' is invalid, try again with real data.'
-        sys.exit()
+    if not evtime:
+        try:
+            st=obsread(wavefile)
+        except:
+            print 'Wavefile: '+wavefile+' is invalid, try again with real data.'
+            sys.exit()
+    else:
+        starttime=evtime
     # Check that user ID is the correct length
     if len(userID) != 4:
         print 'User ID must be 4 characters long'
@@ -310,7 +323,7 @@ def blanksfile(wavefile,evtype,userID,outdir,overwrite):
             str(st[0].stats.starttime.year)+\
             str(st[0].stats.starttime.month).zfill(2)
     # Check is sfilename exists
-    if os.path.isfile(sfilename) and overwrite=='False':
+    if os.path.isfile(sfilename) and not overwrite:
         print 'Desired sfilename: '+sfilename+' exists, will not overwrite'
         for i in range(1,10):
             sfilename=outdir+'/'+str(st[0].stats.starttime.day).zfill(2)+'-'+\
@@ -392,23 +405,36 @@ def populateSfile(sfilename, picks):
     # Now generate lines for the new picks
     newpicks=''
     for pick in picks:
-        newpicks+=' '+pick.station.ljust(5)+pick.channel[0]+\
-                pick.channel[len(pick.channel)-1]+' '+pick.impulsivity+\
-                pick.phase.ljust(4)+str(pick.weight).rjust(1)+' '+\
-                pick.polarity+' '+str(pick.time.hour).rjust(2)+\
-                str(pick.time.minute).rjust(2)+str(pick.time.second).rjust(3)+\
-                '.'+str(pick.time.microsecond).ljust(2)+\
-                str(pick.coda).rjust(5)+str(pick.amplitude).rjust(7)+\
-                str(pick.peri).rjust(5)+str(pick.azimuth).rjust(6)+\
-                str(pick.velocity).rjust(5)+str(pick.AIN).rjust(4)+\
-                str(pick.azimuthres).rjust(3)+str(pick.timeres).rjust(5)+\
-                str(pick.finalweight).rjust(2)+str(pick.distance).rjust(4)+\
-                str(pick.CAZ).rjust(4)+' \n'
+        if pick.distance >= 100.0:
+            pick.distance=int(pick.distance)
+        else:
+            pick.distance=round(pick.distance,1)
+        newpicks+=' '+pick.station.ljust(5)+\
+                pick.channel[0]+pick.channel[len(pick.channel)-1]+\
+                ' '+pick.impulsivity+\
+                pick.phase.ljust(4)+\
+                _str_conv(pick.weight).rjust(1)+' '+\
+                pick.polarity+' '+\
+                str(pick.time.hour).rjust(2)+\
+                str(pick.time.minute).rjust(2)+\
+                str(pick.time.second).rjust(3)+'.'+str(pick.time.microsecond).ljust(2)[0:2]+\
+                _str_conv(pick.coda).rjust(5)[0:5]+\
+                _str_conv(round(pick.amplitude,1)).rjust(7)[0:7]+\
+                _str_conv(pick.peri).rjust(5)+\
+                _str_conv(pick.azimuth).rjust(6)+\
+                _str_conv(pick.velocity).rjust(5)+\
+                _str_conv(pick.AIN).rjust(4)+\
+                _str_conv(pick.azimuthres).rjust(3)+\
+                _str_conv(pick.timeres).rjust(6)+\
+                _str_conv(pick.finalweight).rjust(2)+\
+                _str_conv(pick.distance).rjust(4)+\
+                _str_conv(pick.CAZ).rjust(4)+' \n'
     # Write all new and old info back in
     f=open(sfilename, 'w')
     f.write(header)
     f.write(newpicks)
     f.write(body)
+    f.write('\n'.rjust(81))
     f.close()
 
 if __name__=='__main__':

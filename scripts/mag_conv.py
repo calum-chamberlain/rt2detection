@@ -9,6 +9,7 @@ Calum Chamberlain (VUW) using the magnitude constasts derived by Boese et al.
 
 # import parameter file
 import numpy as np
+import matplotlib.dates as mdates
 
 def dist_calc(loc1, loc2):
     """
@@ -56,10 +57,11 @@ def mag_conv(deltaamp, distance, sta_cor, f_dependent=False, period=999.9):
     :return: Magnitude, float
     """
     from par import mag_conv_par as mag_par
-
+    import warnings
     # Perform a basic check to confirm that the local magnitude scale applies
     if distance > mag_par.maxdist:
-        raise ValueError('Earthquake beyond magnitude scale')
+        warnings.warn('Earthquake beyond magnitude scale '+str(distance))
+        return np.nan
 
     if f_dependent:
         if period==999.9:
@@ -103,18 +105,20 @@ def event_magnitude(sfile):
             if not 'sta_cor' in locals():
                 sta_cor=1.0
                 # print '\nStation correction not found for station '+pick.station
-            try:
-                Magnitude=mag_conv(pick.amplitude, pick.distance, sta_cor,\
-                                  mag_par.frequency_dependent,\
-                                  pick.peri)
-                if not np.isnan(Magnitude):
-                    Mag_out.append(Magnitude)
-            except (ValueError):
+            # try:
+            Magnitude=mag_conv(pick.amplitude, pick.distance, sta_cor,\
+                              mag_par.frequency_dependent,\
+                              pick.peri)
+            if not np.isnan(Magnitude):
+               Mag_out.append(Magnitude)
+            # except (ValueError):
                 # print 'Either earthquake too far away, or frequency is not set'
-                pass
+                # print pick.peri
+                # pass
 
     Mag_std=np.std(Mag_out)
     Mag_out=np.mean(Mag_out) # Take the mean magnitude
+    print Mag_out
     return Mag_out, Mag_std
 
 def recalc_database(path, plot=True):
@@ -125,16 +129,17 @@ def recalc_database(path, plot=True):
     :type path: String
     :param path: Path to the top of the rea tree (above the year directories)
 
-    :return: Event info, list of tuples (Mag_in, Mag_out, Date, Location)
+    :return: Event info, list of tuples (Mag_out, Mag_in, Date, Location)
     """
     import glob, sys
     from par import mag_conv_par as mag_par
     from pro import Sfile_util
+    from obspy import UTCDateTime
     if not glob.glob(path):
         raise NameError('Path does not exist '+path)
 
     sfilelist=glob.glob(path+'/*/*/*.S*')
-    Mag_in=[]
+    Mag_in=[] # Only want to take the local magnitudes
     Mag_out=[]
     Date=[]
     Event_info=[]
@@ -142,12 +147,18 @@ def recalc_database(path, plot=True):
         sys.stdout.write('Working on sfile: '+sfile+'\r')
         sys.stdout.flush()
         Date.append(Sfile_util.readheader(sfile).time)
-        if not np.isnan(Sfile_util.readheader(sfile).Mag_1):
+        if Sfile_util.readheader(sfile).time == UTCDateTime(0):
+            raise ValueError(sfile+' has 0 date')
+        if not np.isnan(Sfile_util.readheader(sfile).Mag_1) and\
+           Sfile_util.readheader(sfile).Mag_1_type=='L':
             Mag_in.append(Sfile_util.readheader(sfile).Mag_1)
-        Magnitude=(event_magnitude(sfile)[0])
+        Magnitude=np.nan
+        if Sfile_util.readheader(sfile).Mag_1_type=='L' and\
+           Sfile_util.readheader(sfile).ev_id != 'E':
+            Magnitude=(event_magnitude(sfile)[0])
         if not np.isnan(Magnitude):
             Mag_out.append(Magnitude)
-        Event_info.append([Magnitude, Sfile_util.readheader(sfile).Mag_1, \
+            Event_info.append([Magnitude, Sfile_util.readheader(sfile).Mag_1, \
                 Sfile_util.readheader(sfile).time, \
                 (Sfile_util.readheader(sfile).latitude, \
                 Sfile_util.readheader(sfile).longitude, \
@@ -155,30 +166,30 @@ def recalc_database(path, plot=True):
     if plot:
         import matplotlib.pyplot as plt
         try:
+            fig, ax1 = plt.subplots()
             # Plot histogram
-            n, bins, patches=plt.hist(Mag_in,len(Mag_in)/5, facecolor='Black', \
+            n, bins, patches=ax1.hist(Mag_in,30, facecolor='Black', \
                                       alpha=0.5, label='Previous, n='+str(len(Mag_in)))
-            n, bins, patches=plt.hist(Mag_out,len(Mag_out)/5, facecolor='Red', \
-                                      alpha=0.75, label='Recalculated, n='+str(len(Mag_out)))
+            n, bins, patches=ax1.hist(Mag_out, bins, facecolor='Red', \
+                                      alpha=0.7, label='Recalculated, n='+str(len(Mag_out)))
             plt.legend()
-            plt.ylabel('Number of events')
+            ax1.set_ylabel('Number of events')
+            ax1.set_ylim([0, max(n)+0.5*max(n)])
             plt.xlabel('Local Magnitude $M_L$')
-            plt.show()
             Mag_out=np.sort(Mag_out)
             cdf=np.arange(len(Mag_out))/float(len(Mag_out)) # normalized, useful in a mo
             cdf=((cdf*-1.0)+1.0)*len(Mag_out)
-            plt.plot(Mag_out,np.log10(cdf), 'r', linewidth=2.0, label='Recalculated')
+            ax2 = ax1.twinx()
+            ax2.plot(Mag_out,np.log10(cdf), 'r', linewidth=2.0, label='Recalculated')
             Mag_in=np.sort(Mag_in)
             cdf=np.arange(len(Mag_in))/float(len(Mag_in)) # normalized, useful in a mo
             cdf=((cdf*-1.0)+1.0)*len(Mag_in)
-            plt.plot(Mag_in,np.log10(cdf), 'k', linewidth=2.0, label='Previous')
-            plt.legend()
-            plt.ylabel('$Log_{10}$ of cumulative density')
-            plt.xlabel('Local Magnitude$M_L$')
+            ax2.plot(Mag_in,np.log10(cdf), 'k', linewidth=2.0, label='Previous')
+            ax2.set_ylabel('$Log_{10}$ of cumulative density')
             plt.show()
             return Event_info
         except (AttributeError):
-            print 'Error plotting'
+            print '\nError plotting'
             return Event_info
     else:
         return Event_info
@@ -217,10 +228,55 @@ def plot_dist_mag(path, origin):
     plt.show()
     return
 
+def plot_dist_mag_time(path, origin):
+    """
+    Function to make a time series plot of distance from a point, with each
+    earthquake scaled arroding to magnitude
+
+    :type path: str
+    :type origin: tuple
+    """
+    Event_info=recalc_database(path, False)
+    mag_in=[]
+    mag_new=[]
+    dist_in=[]
+    dist_out=[]
+    dates_out=[]
+    dates_in=[]
+    for event in Event_info:
+        if not np.isnan(event[0]):
+            mag_new.append(event[0])
+            dist_out.append(dist_calc(origin, event[3]))
+            dates_out.append(event[2].datetime)
+        if not np.isnan(event[1]):
+            mag_in.append(event[1])
+            dist_in.append(dist_calc(origin, event[3]))
+            dates_in.append(event[2].datetime)
+    import matplotlib.pyplot as plt
+    ax = plt.subplot(111)
+    # plt.scatter(dates_in,dist_in,marker='o', c='black', s=[(1*mag)**3 for mag in mag_in], \
+                # alpha=0.3, lw=0, label='Original')
+    plt.scatter(dates_out,dist_out, marker='o', c='black', s=[(2*mag)**2.5 for mag in mag_new], \
+                lw=0, label='_')
+    # Plot fixed size points for legend puposes
+    for i in np.arange(2,6,1):
+        plt.scatter(dates_out[0],-i*10, marker='o', c='black', s=(2*i)**2.5, lw=0,\
+                    label="$M_L="+str(i)+"$")
+    ax.xaxis.set_major_locator(mdates.MonthLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m'))
+    ax.xaxis.set_minor_locator(mdates.DayLocator())
+    plt.ylabel('Distance in km')
+    plt.xlabel('Time')
+    plt.ylim([0,350])
+    plt.title('Magnitude with distance from '+str(origin[0])+', '+str(origin[1]))
+    plt.legend(scatterpoints=1)
+    plt.show()
+    return
+
 def plot_dist_RMS(path, origin):
     """
     Function to recalculate the magnitudes for a given database and plot the
-    magnitude against distance.
+    RMS against distance.
 
     :type path: Str
     :param path: Database to convert

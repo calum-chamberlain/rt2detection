@@ -5,8 +5,7 @@
 ############################Code definitions###################################
 indir='/Volumes/Taranaki_01/data/boseca/SAMBA_mar09/' # Location of raw reftek data
 outdir='/media/Elements/SAMBA_archive/SAMBA_mseed'# Don't change temporary directory
-<<<<<<< HEAD
-contbase="/home/sw/seisan/WAV/SAMCO"              # Location for continuous
+contbase="/Volumes/GeoPhysics_09/users-data/chambeca/SAMFU"              # Location for continuous
                                                   # waveforms
 trigbase="/home/sw/seisan/WAV/SAMTR"              # Location for triggered
                                                   # waveforms
@@ -17,7 +16,7 @@ network='SAMBA' # Needs to be five characters, e.g. SAMBA or RTAF_ - pad with
 archive=True    # Set to True to turn archiving on, will make daylong miniseed
                 # files in the archive directory in Yyyyy/Rddd.01 type directories
 arcdir='/Volumes/GeoPhysics_09/users-data/chambeca/SAMBA_archive/day_volumes_S'# Directory to archive data to
-detrout='obspy' # Can either use the obspy triggering routine, or the seisan
+detrout='none' # Can either use the obspy triggering routine, or the seisan
                 # condet routine (condet is a little less simple to use and is
                 # not yet implimented).
 routype='classic' # Required for calum's python based routine, see that file
@@ -29,10 +28,10 @@ rmold=False     # Boolean - if you want to remove old data then set this to
                 # True, it will remove the miniseed files in the MS_data
                 # directory before it starts, then clean the non-merged data
                 # at the end.
-picker='FP'     # Picker method, can be set to False to not run one - calls
+picker='none'     # Picker method, can be set to False to not run one - calls
                 # external routines
-rawconv=True    # Set to true to look for new data in 'indir'
-converted=True  # Boolean, set to true if raw data have been converted and are
+rawconv=False   # Set to true to look for new data in 'indir'
+converted=False # Boolean, set to true if raw data have been converted and are
                 # in station folders
 merge=False     # Set to true to merge data in MS_data into multiplexed
                 # miniseed files of length 'filelenwant'
@@ -46,7 +45,7 @@ overwrite=False # Set to false to preserve old s-files, you will have to move
 neo='False'     # If you have downloaded the data using neo then we will use
                 # the routine for that. Currently set to string to allow for
                 # a special 'Sometimes' case
-rename=False    # Set to True to use the channel names defined below, if false,
+rename=True     # Set to True to use the channel names defined below, if false,
                 # channels will be named as output by rt2ms (which at this stage
                 # if called from here will be the wired 101,102,103 names.
                 # I suggest only setting this to False if you have already
@@ -55,9 +54,9 @@ rename=False    # Set to True to use the channel names defined below, if false,
 # Descide whether you want it to run for all time or from a start to end date
 alltime=False   # Set to true to run through all time, will desregard start and
                 # end time arguments
-startD='2014/03/26' # Start time for alltime=False in yyyy/mm/dd
-endD = '2015/03/10' # End time for alltime=False in yyyy/mm/dd
-getGeoNet =False# Boolean to get geonet data, if true requires the geostalist
+startD='2012/12/31' # Start time for alltime=False in yyyy/mm/dd
+endD = '2014/03/26' # End time for alltime=False in yyyy/mm/dd
+getGeoNet =True# Boolean to get geonet data, if true requires the geostalist
                 # variable to be complete.
 # Define local class
 class STATION:
@@ -104,8 +103,8 @@ stalist=[STATION('COSA','AF','10','915E',('SHZ','SH1','SH2')),
        # STATION('WQSZ','DF','10','A895',('HHZ','HHN','HHE'))]
 
 #######################USER EIDT SECTION, SET UP STATIONS YOU NEED TO DOWNLOAD#
-geostalist=[STATION('WKZ','NZ','10','',('HHZ','HHE','HHN')),
-            STATION('MLZ','NZ','10','',('HHZ','HHE','HHN')),
+geostalist=[STATION('FOZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('RPZ','NZ','10','',('HHZ','HHE','HHN')),
             STATION('JCZ','NZ','10','',('HHZ','HHE','HHN')),
-            STATION('EAZ','NZ','10','',('HHZ','HHE','HHN')),
-            STATION('MSZ','NZ','10','',('HHZ','HHE','HHN'))]
+            STATION('LBZ','NZ','10','',('HHZ','HHE','HHN')),
+            STATION('WVZ','NZ','10','',('HHZ','HHE','HHN'))]
