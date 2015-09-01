@@ -76,7 +76,7 @@ def mag_conv(deltaamp, distance, sta_cor, f_dependent=False, period=999.9):
             sta_cor
     return Ml
 
-def event_magnitude(sfile):
+def event_magnitude(sfile, min_sta=3):
     """
     Function to generate the magnitude of a single event from a seisan s-file
     with amplitude picks in it
@@ -106,7 +106,8 @@ def event_magnitude(sfile):
                 sta_cor=1.0
                 # print '\nStation correction not found for station '+pick.station
             # try:
-            Magnitude=mag_conv(pick.amplitude, pick.distance, sta_cor,\
+            # Note, seisan stores half amplitudes
+            Magnitude=mag_conv(pick.amplitude*2, pick.distance, sta_cor,\
                               mag_par.frequency_dependent,\
                               pick.peri)
             if not np.isnan(Magnitude):
@@ -115,11 +116,13 @@ def event_magnitude(sfile):
                 # print 'Either earthquake too far away, or frequency is not set'
                 # print pick.peri
                 # pass
-
-    Mag_std=np.std(Mag_out)
-    Mag_out=np.mean(Mag_out) # Take the mean magnitude
-    print Mag_out
-    return Mag_out, Mag_std
+    if len(Mag_out) > min_sta:
+        Mag_std=np.std(Mag_out)
+        Mag_out=np.mean(Mag_out) # Take the mean magnitude
+        print Mag_out
+        return Mag_out, Mag_std
+    else:
+        return np.nan, np.nan
 
 def recalc_database(path, plot=True):
     """
@@ -131,21 +134,30 @@ def recalc_database(path, plot=True):
 
     :return: Event info, list of tuples (Mag_out, Mag_in, Date, Location)
     """
-    import glob, sys
+    import glob, sys, warnings
     from par import mag_conv_par as mag_par
     from pro import Sfile_util
     from obspy import UTCDateTime
     if not glob.glob(path):
         raise NameError('Path does not exist '+path)
 
-    sfilelist=glob.glob(path+'/*/*/*.S*')
+    sfilelist=glob.glob(path+'/*/*/*.S??????')
+    sfilelist.sort()
     Mag_in=[] # Only want to take the local magnitudes
     Mag_out=[]
+    Mag_clipped=[]
     Date=[]
     Event_info=[]
     for sfile in sfilelist:
-        sys.stdout.write('Working on sfile: '+sfile+'\r')
-        sys.stdout.flush()
+        # sys.stdout.write('Working on sfile: '+sfile+'\r')
+        print('Working on sfile: '+sfile+'\r')
+        try:
+            header=Sfile_util.readheader(sfile)
+            del header
+        except IndexError:
+            warnings.warn(sfile+' is corrupt')
+            break
+        # sys.stdout.flush()
         Date.append(Sfile_util.readheader(sfile).time)
         if Sfile_util.readheader(sfile).time == UTCDateTime(0):
             raise ValueError(sfile+' has 0 date')
@@ -158,6 +170,7 @@ def recalc_database(path, plot=True):
             Magnitude=(event_magnitude(sfile)[0])
         if not np.isnan(Magnitude):
             Mag_out.append(Magnitude)
+            Mag_clipped.append(Sfile_util.readheader(sfile).Mag_1)
             Event_info.append([Magnitude, Sfile_util.readheader(sfile).Mag_1, \
                 Sfile_util.readheader(sfile).time, \
                 (Sfile_util.readheader(sfile).latitude, \
@@ -168,8 +181,11 @@ def recalc_database(path, plot=True):
         try:
             fig, ax1 = plt.subplots()
             # Plot histogram
-            n, bins, patches=ax1.hist(Mag_in,30, facecolor='Black', \
+            bins=np.arange(-1,7,0.2)
+            n, bins, patches=ax1.hist(Mag_in,bins, facecolor='Black', \
                                       alpha=0.5, label='Previous, n='+str(len(Mag_in)))
+            n, bins, patches=ax1.hist(Mag_clipped,bins, facecolor='Black', \
+                                      alpha=0.7, label='Previous, n='+str(len(Mag_clipped)))
             n, bins, patches=ax1.hist(Mag_out, bins, facecolor='Red', \
                                       alpha=0.7, label='Recalculated, n='+str(len(Mag_out)))
             plt.legend()
