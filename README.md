@@ -1,6 +1,8 @@
 # rt2detection
 Python implimentation of RefTek data to earthquake catalogue
 
+**NOT MAINTAINED**
+
 See the doc directory for full sphinx documentation of this project.
 
 Started in 2014 to enable seismologists working on the DFDP real-time seismicity monitoring effort to download data from
